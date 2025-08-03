@@ -1,0 +1,38 @@
+{
+  "name": "api-gestion-notes",
+  "type": "module",
+  "_moduleAliases": {
+  "@": "src"
+},
+
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "prisma:init": "npx prisma init",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:generate": "npx prisma generate",
+    "prisma:studio": "npx prisma studio",
+    "build": "echo 'Pas de build pour le backend JS classique 😉'"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.18.1",
+    "@prisma/client": "^6.13.0",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
+    "dotenv": "^17.2.1",
+    "exceljs": "^4.4.0",
+    "hono": "^4.8.12",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
+    "pdf-lib": "^1.17.1",
+    "prisma": "^6.13.0",
+    "zod": "^4.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.7.1",
+    "typescript": "^5.8.3"
+  }
+}

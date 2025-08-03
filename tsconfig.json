@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "allowJs": true,              
+    "checkJs": false,             
+    "skipLibCheck": true,         
+    "esModuleInterop": true,      
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "outDir": "./dist",           
+    "baseUrl": "./src"            
+  },
+  "include": ["src/**/*.js"],
+  "exclude": ["node_modules"]
+}
