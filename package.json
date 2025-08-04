@@ -2,9 +2,8 @@
   "name": "api-gestion-notes",
   "type": "module",
   "_moduleAliases": {
-  "@": "src"
-},
-
+    "@": "src"
+  },
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
@@ -16,6 +15,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.18.1",
+    "@hono/zod-validator": "^0.7.2",
     "@prisma/client": "^6.13.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
@@ -26,7 +26,10 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "pdf-lib": "^1.17.1",
+    "pino": "^9.7.0",
+    "pino-pretty": "^13.1.1",
     "prisma": "^6.13.0",
+    "simple-statistics": "^7.8.8",
     "zod": "^4.0.14"
   },
   "devDependencies": {
