@@ -63,6 +63,7 @@ model User {
   password      String   @db.VarChar(255)
   adresse       String?  @db.Text
   telephone     String   @unique @db.VarChar(255)
+  avatar        String?  @db.Text
   role          Role     @default(eleve)
   date_creation DateTime @default(now()) @db.Timestamp(6)
   statut        Statut   @default(actif)
@@ -71,6 +72,7 @@ model User {
 
   @@map("users")
 }
+
 
 model Niveau {
   id       Int      @id @default(autoincrement())
@@ -102,9 +104,6 @@ model Student {
   classId          Int?
   date_naissance   DateTime?   @db.Date
   lieu_naissance   String?     @db.VarChar(100)
-  adresse          String?     @db.Text
-  avatar           String?     @db.Text
-  telephone        String?     @db.VarChar(20)
   nom_parent       String?     @db.VarChar(100)
   telephone_parent String?     @db.VarChar(20)
   email_parent     String?     @db.VarChar(255)
@@ -116,6 +115,7 @@ model Student {
 
   @@map("students")
 }
+
 
 model Subject {
   id           Int            @id @default(autoincrement())
