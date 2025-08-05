@@ -1,0 +1,268 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ====================== ENUMS ======================
+
+enum Role {
+  admin
+  professeur
+  eleve
+}
+
+enum Statut {
+  actif
+  inactif
+}
+
+enum NoteType {
+  devoir
+  composition
+  oral
+  projet
+}
+
+enum AlertType {
+  note_basse
+  absentéisme
+  comportement
+}
+
+enum AlertStatut {
+  nouveau
+  en_cours
+  resolu
+}
+
+enum AlertPriorite {
+  faible
+  moyenne
+  haute
+}
+
+// ====================== MODELS ======================
+
+model User {
+  id            Int      @id @default(autoincrement())
+  nom           String   @db.VarChar(100)
+  prenom        String   @db.VarChar(100)
+  email         String   @unique @db.VarChar(255)
+  password      String   @db.VarChar(255)
+  adresse       String?  @db.Text
+  telephone     String   @unique @db.VarChar(255)
+  role          Role     @default(eleve)
+  date_creation DateTime @default(now()) @db.Timestamp(6)
+  statut        Statut   @default(actif)
+  student       Student?
+  teacher       Teacher?
+
+  @@map("users")
+}
+
+model Niveau {
+  id       Int      @id @default(autoincrement())
+  libelle  String   @db.VarChar(50)
+  classes  Class[]
+  subjects Subject[]
+
+  @@map("niveaux")
+}
+
+model Class {
+  id             Int             @id @default(autoincrement())
+  nom            String          @db.VarChar(50)
+  niveau         Niveau          @relation(fields: [niveauId], references: [id])
+  niveauId       Int
+  annee_scolaire String          @db.VarChar(20)
+  capacite_max   Int?
+  students       Student[]
+  classSubjects  ClassSubject[]
+
+  @@map("classes")
+}
+
+model Student {
+  id               Int         @id @default(autoincrement())
+  user             User        @relation(fields: [userId], references: [id])
+  userId           Int         @unique
+  class            Class?      @relation(fields: [classId], references: [id])
+  classId          Int?
+  date_naissance   DateTime?   @db.Date
+  lieu_naissance   String?     @db.VarChar(100)
+  adresse          String?     @db.Text
+  avatar           String?     @db.Text
+  telephone        String?     @db.VarChar(20)
+  nom_parent       String?     @db.VarChar(100)
+  telephone_parent String?     @db.VarChar(20)
+  email_parent     String?     @db.VarChar(255)
+  date_inscription DateTime    @default(now()) @db.Date
+  grades           Grade[]
+  averages         Average[]
+  reportCards      ReportCard[]
+  alerts           Alert[]
+
+  @@map("students")
+}
+
+model Subject {
+  id           Int            @id @default(autoincrement())
+  nom          String         @db.VarChar(100)
+  description  String?        @db.Text
+  niveau       Niveau         @relation(fields: [niveauId], references: [id])
+  niveauId     Int
+  coefficient  Decimal        @db.Decimal(3, 1)
+  grades       Grade[]
+  averages     Average[]
+  classSubjects ClassSubject[]
+  teacherSubjects TeacherSubject[]
+  alerts        Alert[]       
+
+  @@map("subjects")
+}
+
+model Teacher {
+  id              Int              @id @default(autoincrement())
+  user            User             @relation(fields: [userId], references: [id])
+  userId          Int              @unique
+  date_embauche   DateTime?        @db.Date
+  specialite      String?          @db.VarChar(100)
+  grades          Grade[]
+  classSubjects   ClassSubject[]
+  teacherSubjects TeacherSubject[]
+
+  @@map("teachers")
+}
+
+model Grade {
+  id              Int            @id @default(autoincrement())
+  student         Student        @relation(fields: [studentId], references: [id])
+  studentId       Int
+  subject         Subject        @relation(fields: [subjectId], references: [id])
+  subjectId       Int
+  teacher         Teacher        @relation(fields: [teacherId], references: [id])
+  teacherId       Int
+  note            Decimal?       @db.Decimal(4, 2)
+  coefficient     Decimal          @db.Decimal(3, 1)
+  type_note       NoteType
+  trimestre       Trimestre      @relation(fields: [trimestreId], references: [id])
+  trimestreId     Int
+  date            DateTime       @default(now()) @db.Timestamp(6)
+  commentaire     String?        @db.Text
+  annee_scolaire  AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
+  anneeScolaireId Int
+
+  @@map("grades")
+}
+
+model Average {
+  id              Int            @id @default(autoincrement())
+  student         Student        @relation(fields: [studentId], references: [id])
+  studentId       Int
+  subject         Subject        @relation(fields: [subjectId], references: [id])
+  subjectId       Int
+  trimestre       Trimestre      @relation(fields: [trimestreId], references: [id])
+  trimestreId     Int
+  moyenne         Decimal          @db.Decimal(4, 2)
+  rang            Int?
+  appreciation    String?        @db.Text
+  annee_scolaire  AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
+  anneeScolaireId Int
+
+  @@map("averages")
+}
+
+model ReportCard {
+  id                    Int            @id @default(autoincrement())
+  student               Student        @relation(fields: [studentId], references: [id])
+  studentId             Int
+  trimestre             Trimestre      @relation(fields: [trimestreId], references: [id])
+  trimestreId           Int
+  moyenne_generale      Decimal          @db.Decimal(4, 2)
+  rang_classe           Int?
+  appreciation_generale String?       @db.Text
+  date_edition          DateTime       @default(now()) @db.Timestamp(6)
+  chemin_fichier        String         @db.Text
+  annee_scolaire        AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
+  anneeScolaireId       Int
+
+  @@map("report_cards")
+}
+
+model ClassSubject {
+  id              Int           @id @default(autoincrement())
+  class           Class         @relation(fields: [classId], references: [id])
+  classId         Int
+  subject         Subject       @relation(fields: [subjectId], references: [id])
+  subjectId       Int
+  teacher         Teacher?      @relation(fields: [teacherId], references: [id])
+  teacherId       Int?
+  coefficient     Decimal         @db.Decimal(3, 1)
+  annee_scolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  anneeScolaireId Int
+
+  @@map("class_subjects")
+}
+
+model TeacherSubject {
+  id        Int     @id @default(autoincrement())
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  teacherId Int
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  subjectId Int
+
+  @@unique([teacherId, subjectId])
+  @@map("teacher_subjects")
+}
+
+model Alert {
+  id              Int           @id @default(autoincrement())
+  student         Student       @relation(fields: [studentId], references: [id])
+  studentId       Int
+  type            AlertType
+  subject         Subject?      @relation(fields: [subjectId], references: [id])
+  subjectId       Int?
+  trimestre       Int
+  message         String        @db.Text
+  date_creation   DateTime      @default(now()) @db.Timestamp(6)
+  statut          AlertStatut   @default(nouveau)
+  priorite        AlertPriorite @default(moyenne)
+
+  @@map("alerts")
+}
+
+model AnneeScolaire {
+  id             Int             @id @default(autoincrement())
+  libelle        String          @unique @db.VarChar(20)
+  grades         Grade[]
+  averages       Average[]
+  reportCards    ReportCard[]
+  classSubjects  ClassSubject[]
+  trimestres     Trimestre[]
+
+  @@map("annee_scolaire")
+}
+
+model Trimestre {
+  id              Int            @id @default(autoincrement())
+  libelle         String         @db.VarChar(10)
+  annee_scolaire  AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
+  anneeScolaireId Int
+  grades          Grade[]
+  averages        Average[]
+  reportCards     ReportCard[]
+
+  @@map("trimestres")
+}

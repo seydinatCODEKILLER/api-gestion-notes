@@ -1,5 +1,6 @@
 import { serve } from '@hono/node-server'
 import 'module-alias/register.js'
+import { env } from '@/config/env.js'
 import { Hono } from 'hono'
 
 const app = new Hono()
