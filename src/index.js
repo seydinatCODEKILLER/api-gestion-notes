@@ -1,17 +1,9 @@
-import { serve } from '@hono/node-server'
-import 'module-alias/register.js'
-import { env } from '@/config/env.js'
-import { Hono } from 'hono'
+import "module-alias/register.js";
+import { serve } from "@hono/node-server";
+import app from "./app.js";
+import { env } from "./config/env.js";
 
-const app = new Hono()
-
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
-
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+// Démarrage du serveur
+serve({ fetch: app.fetch, port: env.PORT }, (info) => {
+  console.log(`✅ Serveur démarré sur : http://localhost:${info.port}`);
+});
