@@ -10,28 +10,6 @@ export default class AuthService {
     this.tokenGenerator = new TokenGenerator()
   }
 
-  async register(userData) {
-    const existingUser = await prisma.user.findUnique({ 
-      where: { email: userData.email } 
-    })
-    
-    if (existingUser) throw new Error('Email déjà utilisé')
-
-    const hashedPassword = await this.passwordHasher.hash(userData.password)
-    const avatarUrl = userData.avatar 
-      ? await this.avatarUploader.upload(userData.avatar, userData.prenom)
-      : null
-
-    return prisma.user.create({
-      data: {
-        ...userData,
-        password: hashedPassword,
-        avatar: avatarUrl
-      },
-      select: this.userSelectFields
-    })
-  }
-
   async login(email, password) {
     const user = await prisma.user.findUnique({ where: { email } })
     if (!user) throw new Error('Identifiants invalides')
@@ -46,17 +24,6 @@ export default class AuthService {
         email: user.email
       }),
       user: this.filterUserFields(user)
-    }
-  }
-
-  get userSelectFields() {
-    return {
-      id: true,
-      nom: true,
-      prenom: true,
-      email: true,
-      role: true,
-      avatar: true
     }
   }
 

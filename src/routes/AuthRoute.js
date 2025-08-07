@@ -9,7 +9,6 @@ export default class AuthRoute {
   }
 
   setupRoutes() {
-    this.router.post("/register", (ctx) => this.controller.register(ctx));
     this.router.post("/login", (ctx) => this.controller.login(ctx));
   }
 

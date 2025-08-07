@@ -14,21 +14,23 @@ export default class AuthMiddleware {
         throw new HTTPException(401, { message: "Authentification requise" });
       }
 
+      const token = authHeader.split(" ")[1];
+
+      let decoded;
       try {
-        const token = authHeader.split(" ")[1];
-        const decoded = this.tokenGenerator.verify(token);
-
-        if (roles.length && !roles.includes(decoded.role)) {
-          throw new HTTPException(403, {
-            message: "Permissions insuffisantes",
-          });
-        }
-
-        ctx.set("user", decoded);
-        await next();
+        decoded = this.tokenGenerator.verify(token);
       } catch (error) {
         throw new HTTPException(401, { message: "Token invalide ou expiré" });
       }
+
+      if (roles.length && !roles.includes(decoded.role)) {
+        throw new HTTPException(403, {
+          message: "Permissions insuffisantes",
+        });
+      }
+
+      ctx.set("user", decoded);
+      await next();
     };
   }
 }
