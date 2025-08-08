@@ -11,10 +11,48 @@ export default class TeacherController {
   async getAllTeachers(ctx) {
     try {
       const teachers = await this.service.getAllTeachers();
-      if (teachers.length === 0) return ctx.json({ success: true, message: "Aucun professeur trouvé", data: [] },200);
+      if (teachers.length === 0)
+        return ctx.json(
+          { success: true, message: "Aucun professeur trouvé", data: [] },
+          200
+        );
       return ctx.json({ success: true, data: teachers });
     } catch (error) {
       throw new HTTPException(500, { message: error.message });
+    }
+  }
+
+  async createTeacher(ctx) {
+    try {
+      const formData = await ctx.req.parseBody();
+      this.validator.validateCreate(formData);
+
+      const newTeacher = await this.service.createTeacher(formData);
+      return ctx.json({ success: true, data: newTeacher }, 201);
+    } catch (error) {
+      throw new HTTPException(400, { message: error.message });
+    }
+  }
+
+  async updateTeacher(ctx) {
+    try {
+      const teacherId = parseInt(ctx.req.param("id"));
+      if (isNaN(teacherId)) throw new Error("ID invalide");
+
+      const formData = await ctx.req.parseBody();
+      this.validator.validateUpdate(formData);
+
+      const updatedTeacher = await this.service.updateTeacher(
+        teacherId,
+        formData
+      );
+      return ctx.json({
+        success: true,
+        data: updatedTeacher,
+      });
+    } catch (error) {
+      const statusCode = error.message.includes("non trouvé") ? 404 : 400;
+      throw new HTTPException(statusCode, { message: error.message });
     }
   }
 }
