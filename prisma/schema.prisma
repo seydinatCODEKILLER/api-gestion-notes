@@ -76,7 +76,7 @@ model User {
 
 model Niveau {
   id       Int      @id @default(autoincrement())
-  libelle  String   @db.VarChar(50)
+  libelle  String   @unique @db.VarChar(50)
   statut   Statut   @default(actif)
   classes  Class[]
   subjects Subject[]
@@ -86,7 +86,7 @@ model Niveau {
 
 model Class {
   id             Int             @id @default(autoincrement())
-  nom            String          @db.VarChar(50)
+  nom            String          @unique @db.VarChar(50)
   niveau         Niveau          @relation(fields: [niveauId], references: [id])
   niveauId       Int
   annee_scolaire String          @db.VarChar(20)
