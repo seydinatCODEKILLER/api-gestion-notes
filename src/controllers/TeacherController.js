@@ -10,13 +10,29 @@ export default class TeacherController {
 
   async getAllTeachers(ctx) {
     try {
-      const teachers = await this.service.getAllTeachers();
-      if (teachers.length === 0)
-        return ctx.json(
-          { success: true, message: "Aucun professeur trouvé", data: [] },
-          200
-        );
-      return ctx.json({ success: true, data: teachers });
+      const { includeInactive, search, page, pageSize } = ctx.req.query();
+
+      const teachers = await this.service.getAllTeachers({
+        includeInactive: includeInactive === "true",
+        search,
+        page: parseInt(page) || 1,
+        pageSize: parseInt(pageSize) || 10,
+      });
+
+      const total = await this.service.countTeachers(
+        includeInactive === "true"
+      );
+
+      return ctx.json({
+        success: true,
+        data: teachers,
+        pagination: {
+          total,
+          page: parseInt(page) || 1,
+          pageSize: parseInt(pageSize) || 10,
+          totalPages: Math.ceil(total / (parseInt(pageSize) || 10)),
+        },
+      });
     } catch (error) {
       throw new HTTPException(500, { message: error.message });
     }

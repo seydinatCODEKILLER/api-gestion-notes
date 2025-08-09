@@ -8,8 +8,31 @@ export default class TeacherService {
     this.avatarUploader = new AvatarUploader();
   }
 
-  async getAllTeachers() {
+  async getAllTeachers(options = {}) {
+    const {
+      includeInactive = false,
+      search = "",
+      page = 1,
+      pageSize = 10,
+    } = options;
+
     return prisma.teacher.findMany({
+      where: {
+        AND: [
+          {
+            user: {
+              statut: includeInactive ? undefined : "actif",
+              OR: search
+                ? [
+                    { nom: { contains: search, mode: "insensitive" } },
+                    { prenom: { contains: search, mode: "insensitive" } },
+                    { email: { contains: search, mode: "insensitive" } },
+                  ]
+                : undefined,
+            },
+          },
+        ],
+      },
       include: {
         user: {
           select: {
@@ -19,7 +42,6 @@ export default class TeacherService {
             email: true,
             telephone: true,
             avatar: true,
-            adresse: true,
             statut: true,
             date_creation: true,
           },
@@ -28,6 +50,18 @@ export default class TeacherService {
       orderBy: {
         user: {
           nom: "asc",
+        },
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+  }
+
+  async countTeachers(includeInactive = false) {
+    return prisma.teacher.count({
+      where: {
+        user: {
+          statut: includeInactive ? undefined : "actif",
         },
       },
     });
