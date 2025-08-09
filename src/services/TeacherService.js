@@ -46,28 +46,46 @@ export default class TeacherService {
       date_embauche,
     } = teacherData;
 
-    return await prisma.$transaction(async (tx) => {
-      await this.verifyEmailNotExists(tx, email);
+    let uploadPrefix = `teacher_${prenom}_${nom}`.toLowerCase();
+    let avatarUrl = null;
 
-      const hashedPassword = await this.passwordHasher.hash(password);
-      const avatarUrl = await this.handleAvatarUpload(avatar, prenom);
+    try {
+      await this.verifyEmailNotExists(prisma, email);
 
-      const createdUser = await this.createUserRecord(tx, {
-        nom,
-        prenom,
-        email,
-        telephone,
-        adresse,
-        password: hashedPassword,
-        avatar: avatarUrl,
-      });
+      avatarUrl = await this.handleAvatarUpload(avatar, uploadPrefix);
+      const result = await prisma.$transaction(
+        async (tx) => {
+          const hashedPassword = await this.passwordHasher.hash(password);
+          const createdUser = await this.createUserRecord(tx, {
+            nom,
+            prenom,
+            email,
+            telephone,
+            adresse,
+            password: hashedPassword,
+            avatar: avatarUrl,
+          });
 
-      return this.createTeacherRecord(tx, {
-        userId: createdUser.id,
-        specialite,
-        date_embauche,
-      });
-    });
+          return this.createTeacherRecord(tx, {
+            userId: createdUser.id,
+            specialite,
+            date_embauche,
+          });
+        },
+        {
+          timeout: 10000,
+        }
+      );
+
+      return result;
+    } catch (error) {
+      if (avatarUrl) {
+        await this.avatarUploader.rollback(uploadPrefix);
+      }
+
+      console.error("Erreur création professeur:", error);
+      throw error;
+    }
   }
 
   async verifyEmailNotExists(prismaClient, email) {
@@ -194,7 +212,8 @@ export default class TeacherService {
       delete: { from: "actif", to: "inactif" },
     };
 
-    if (!validTransitions[action]) throw new Error("Action invalide. Utilisez 'delete' ou 'restore'");
+    if (!validTransitions[action])
+      throw new Error("Action invalide. Utilisez 'delete' ou 'restore'");
     const { from, to } = validTransitions[action];
 
     return await prisma.$transaction(async (tx) => {
@@ -216,6 +235,38 @@ export default class TeacherService {
       });
 
       return { id: teacherId, status: to };
+    });
+  }
+
+  async getTeacherById(teacherId) {
+    return await prisma.teacher.findUnique({
+      where: { id: teacherId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            nom: true,
+            prenom: true,
+            email: true,
+            telephone: true,
+            avatar: true,
+            adresse: true,
+            date_creation: true,
+            statut: true,
+          },
+        },
+        teacherSubjects: {
+          include: {
+            subject: true,
+          },
+        },
+        classSubjects: {
+          include: {
+            class: true,
+            subject: true,
+          },
+        },
+      },
     });
   }
 }

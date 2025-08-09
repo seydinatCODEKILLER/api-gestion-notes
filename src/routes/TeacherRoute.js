@@ -13,6 +13,7 @@ export default class TeacherRoute {
   setupRoutes() {
     this.router.use("*", this.authMiddleware.protect(["admin"]));
     this.router.get("/", (ctx) => this.controller.getAllTeachers(ctx));
+    this.router.get("/:id", (ctx) => this.controller.getTeacher(ctx));
     this.router.post("/", async (ctx) => this.controller.createTeacher(ctx));
     this.router.put("/:id", (ctx) => this.controller.updateTeacher(ctx));
     this.router.patch("/:id/delete", (ctx) => this.controller.deleteTeacher(ctx));

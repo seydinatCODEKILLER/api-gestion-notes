@@ -56,6 +56,24 @@ export default class TeacherController {
     }
   }
 
+  async getTeacher(ctx) {
+    try {
+      const teacherId = parseInt(ctx.req.param("id"));
+      if (isNaN(teacherId)) throw new Error("ID invalide");
+
+      const teacher = await this.service.getTeacherById(teacherId);
+      if (!teacher) throw new Error("Professeur non trouvé");
+
+      return ctx.json({
+        success: true,
+        data: teacher,
+      });
+    } catch (error) {
+      const statusCode = error.message.includes("non trouvé") ? 404 : 400;
+      throw new HTTPException(statusCode, { message: error.message });
+    }
+  }
+
   async handleStatusChange(ctx, action) {
     try {
       const teacherId = parseInt(ctx.req.param("id"));
