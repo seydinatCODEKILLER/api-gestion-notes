@@ -122,8 +122,14 @@ export default class TeacherService {
   }
 
   async updateTeacher(teacherId, updateData) {
-    const { currentPassword, newPassword, avatar, date_embauche,specialite, ...rest } =
-      updateData;
+    const {
+      currentPassword,
+      newPassword,
+      avatar,
+      date_embauche,
+      specialite,
+      ...rest
+    } = updateData;
 
     return await prisma.$transaction(async (tx) => {
       const teacher = await tx.teacher.findUnique({
@@ -179,6 +185,37 @@ export default class TeacherService {
           },
         },
       });
+    });
+  }
+
+  async setTeacherStatus(teacherId, action) {
+    const validTransitions = {
+      restore: { from: "inactif", to: "actif" },
+      delete: { from: "actif", to: "inactif" },
+    };
+
+    if (!validTransitions[action]) throw new Error("Action invalide. Utilisez 'delete' ou 'restore'");
+    const { from, to } = validTransitions[action];
+
+    return await prisma.$transaction(async (tx) => {
+      const teacher = await tx.teacher.findUnique({
+        where: { id: teacherId },
+        include: { user: { select: { id: true, statut: true } } },
+      });
+
+      if (!teacher) throw new Error("Professeur non trouvé");
+      if (teacher.user.statut !== from) {
+        throw new Error(
+          `Action impossible: le professeur est ${teacher.user.statut}`
+        );
+      }
+
+      await tx.user.update({
+        where: { id: teacher.user.id },
+        data: { statut: to },
+      });
+
+      return { id: teacherId, status: to };
     });
   }
 }

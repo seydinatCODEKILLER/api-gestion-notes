@@ -55,4 +55,30 @@ export default class TeacherController {
       throw new HTTPException(statusCode, { message: error.message });
     }
   }
+
+  async handleStatusChange(ctx, action) {
+    try {
+      const teacherId = parseInt(ctx.req.param("id"));
+      if (isNaN(teacherId)) throw new Error("ID invalide");
+      const result = await this.service.setTeacherStatus(teacherId, action);
+      return ctx.json({
+        success: true,
+        message: `Professeur ${
+          action === "restore" ? "réactivé" : "désactivé"
+        } avec succès`,
+        data: result,
+      });
+    } catch (error) {
+      const statusCode = error.message.includes("non trouvé") ? 404 : 400;
+      throw new HTTPException(statusCode, { message: error.message });
+    }
+  }
+
+  async deleteTeacher(ctx) {
+    return this.handleStatusChange(ctx, "delete");
+  }
+
+  async restoreTeacher(ctx) {
+    return this.handleStatusChange(ctx, "restore");
+  }
 }
