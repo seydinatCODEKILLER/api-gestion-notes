@@ -89,7 +89,8 @@ model Class {
   nom            String          @unique @db.VarChar(50)
   niveau         Niveau          @relation(fields: [niveauId], references: [id])
   niveauId       Int
-  annee_scolaire String          @db.VarChar(20)
+  anneeScolaire  AnneeScolaire   @relation(fields: [anneeScolaireId], references: [id])  
+  anneeScolaireId Int
   statut   Statut   @default(actif)
   capacite_max   Int?
   students       Student[]
@@ -255,6 +256,7 @@ model AnneeScolaire {
   reportCards    ReportCard[]
   classSubjects  ClassSubject[]
   trimestres     Trimestre[]
+  Class          Class[]
 
   @@map("annee_scolaire")
 }
