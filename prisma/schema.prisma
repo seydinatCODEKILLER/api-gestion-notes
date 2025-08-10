@@ -213,7 +213,6 @@ model ClassSubject {
   subjectId       Int
   teacher         Teacher?      @relation(fields: [teacherId], references: [id])
   teacherId       Int?
-  coefficient     Decimal         @db.Decimal(3, 1)
   annee_scolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
   anneeScolaireId Int
 
