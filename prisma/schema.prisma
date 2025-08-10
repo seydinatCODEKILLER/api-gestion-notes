@@ -124,6 +124,7 @@ model Subject {
   id           Int            @id @default(autoincrement())
   nom          String         @db.VarChar(100)
   description  String?        @db.Text
+  statut       Statut         @default(actif)
   niveau       Niveau         @relation(fields: [niveauId], references: [id])
   niveauId     Int
   coefficient  Decimal        @db.Decimal(3, 1)
