@@ -9,6 +9,7 @@ import ClassRoute from "./routes/ClassRoute.js";
 import SubjectRoute from "./routes/SubjectRoute.js";
 import ClassSubjectRoute from "./routes/ClassSubjectRoute.js";
 import TeacherSubjectRoute from "./routes/TeacherSubjectRoute.js";
+import StudentRoute from "./routes/StudentRoute.js";
 
 const app = new Hono();
 
@@ -25,6 +26,7 @@ const classRoute = new ClassRoute();
 const subjectRoute = new SubjectRoute();
 const classSubjectRoute = new ClassSubjectRoute();
 const teacherSubjectRoute = new TeacherSubjectRoute();
+const studentRoute = new StudentRoute();
 
 app.route("/api/auth", authRoute.routes);
 app.route('/api/teachers', teacherRoute.routes);
@@ -34,5 +36,6 @@ app.route('/api/classes', classRoute.routes);
 app.route('/api/matieres', subjectRoute.routes);
 app.route('/api/class-subjects', classSubjectRoute.routes);
 app.route('/api/teacher-subjects', teacherSubjectRoute.routes);
+app.route('/api/students', studentRoute.routes);
 
 export default app;
