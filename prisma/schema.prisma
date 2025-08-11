@@ -159,7 +159,6 @@ model Grade {
   teacher         Teacher        @relation(fields: [teacherId], references: [id])
   teacherId       Int
   note            Decimal?       @db.Decimal(4, 2)
-  coefficient     Decimal          @db.Decimal(3, 1)
   type_note       NoteType
   trimestre       Trimestre      @relation(fields: [trimestreId], references: [id])
   trimestreId     Int
@@ -266,6 +265,7 @@ model Trimestre {
   libelle         String         @db.VarChar(10)
   annee_scolaire  AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
   anneeScolaireId Int
+  statut         Statut          @default(actif)
   grades          Grade[]
   averages        Average[]
   reportCards     ReportCard[]
