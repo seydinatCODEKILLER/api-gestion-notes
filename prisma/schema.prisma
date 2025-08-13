@@ -236,7 +236,8 @@ model Alert {
   type            AlertType
   subject         Subject?      @relation(fields: [subjectId], references: [id])
   subjectId       Int?
-  trimestre       Int
+  trimestre       Trimestre?     @relation(fields: [trimestreId], references: [id])
+  trimestreId     Int?
   message         String        @db.Text
   date_creation   DateTime      @default(now()) @db.Timestamp(6)
   statut          AlertStatut   @default(nouveau)
@@ -269,6 +270,18 @@ model Trimestre {
   grades          Grade[]
   averages        Average[]
   reportCards     ReportCard[]
+  alerts          Alert[]
 
   @@map("trimestres")
+}
+
+model GradeUpdateTrack {
+  id          Int      @id @default(autoincrement())
+  gradeId     Int
+  studentId   Int
+  subjectId   Int
+  trimestreId Int
+  updatedAt   DateTime @default(now())
+  
+  @@index([studentId, subjectId, trimestreId])
 }

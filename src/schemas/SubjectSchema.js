@@ -21,7 +21,6 @@ export default class SubjectSchema {
       niveauId: z.number().int().positive().optional(),
       coefficient: z.number().min(0.1).max(10).optional(),
       description: z.string().max(500).optional().nullable(),
-      statut: z.enum(["actif", "inactif"]).optional(),
     });
 
     const result = schema.safeParse(data);
