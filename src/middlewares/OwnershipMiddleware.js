@@ -138,7 +138,7 @@ export default class OwnershipMiddleware {
       }
     }
 
-    return next();
+    return await next();
   }
 
   async checkAlertAccess(ctx, next) {

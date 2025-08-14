@@ -13,12 +13,19 @@ import StudentRoute from "./routes/StudentRoute.js";
 import TrimestreRoute from "./routes/TrimestreRoute.js";
 import GradeRoute from "./routes/GradeRoute.js";
 import AverageRoute from "./routes/AverageRoute.js";
+import ReportCardRoute from "./routes/ReportCardRoute.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import { serveStatic } from "hono/serve-static";
 
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = new Hono();
 
 // Middlewares globaux
 app.use("*", logger());
 app.use("*", cors());
+// app.use("/report-cards/*", serveStatic({ root: path.join(__dirname, "../public")}));
 
 // Routes
 const authRoute = new AuthRoute();
@@ -33,6 +40,7 @@ const studentRoute = new StudentRoute();
 const trimestreRoute = new TrimestreRoute();
 const gradeRoute = new GradeRoute();
 const averageRoute = new AverageRoute();
+const reportCardRoute = new ReportCardRoute()
 
 app.route("/api/auth", authRoute.routes);
 app.route('/api/teachers', teacherRoute.routes);
@@ -46,5 +54,6 @@ app.route('/api/students', studentRoute.routes);
 app.route('/api/trimestres', trimestreRoute.routes);
 app.route('/api/grades', gradeRoute.routes);
 app.route('/api/averages', averageRoute.routes);
+app.route('/api/report-cards', reportCardRoute.routes);
 
 export default app;

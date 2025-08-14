@@ -188,21 +188,25 @@ model Average {
 }
 
 model ReportCard {
-  id                    Int            @id @default(autoincrement())
-  student               Student        @relation(fields: [studentId], references: [id])
-  studentId             Int
-  trimestre             Trimestre      @relation(fields: [trimestreId], references: [id])
-  trimestreId           Int
-  moyenne_generale      Decimal          @db.Decimal(4, 2)
-  rang_classe           Int?
-  appreciation_generale String?       @db.Text
-  date_edition          DateTime       @default(now()) @db.Timestamp(6)
-  chemin_fichier        String         @db.Text
-  annee_scolaire        AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
-  anneeScolaireId       Int
+  id              Int     @id @default(autoincrement())
+  studentId       Int
+  trimestreId     Int
+  moyenne_generale Decimal @db.Decimal(4, 2)
+  rang_classe     Int?
+  appreciation_generale String? @db.Text
+  date_edition    DateTime @default(now()) @db.Timestamp(6)
+  chemin_fichier  String   @db.Text
+  file_path       String   @db.Text
+  anneeScolaireId Int
 
+  student         Student     @relation(fields: [studentId], references: [id])
+  trimestre       Trimestre   @relation(fields: [trimestreId], references: [id])
+  annee_scolaire  AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+
+  @@unique([studentId, trimestreId])
   @@map("report_cards")
 }
+
 
 model ClassSubject {
   id              Int           @id @default(autoincrement())

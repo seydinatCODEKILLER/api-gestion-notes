@@ -46,6 +46,7 @@ export default class ReportCardRoute {
       this.ownershipMiddleware.checkReportCardAccess,
       (ctx) => this.controller.downloadReportCard(ctx)
     );
+
   }
 
   get routes() {
