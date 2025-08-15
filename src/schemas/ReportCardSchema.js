@@ -22,7 +22,6 @@ export default class ReportCardSchema {
     const schema = z.object({
       rang_classe: z.number().int().min(1).optional(),
       appreciation_generale: z.string().max(1000).optional(),
-      chemin_fichier: z.string().url().optional()
     });
 
     const result = schema.safeParse(data);

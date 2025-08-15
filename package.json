@@ -11,10 +11,12 @@
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
+    "build-docs": "npx swagger-cli bundle src/docs/openapi.yaml -o src/docs/openapi.json --type json",
     "build": "echo 'Pas de build pour le backend JS classique 😉'"
   },
   "dependencies": {
     "@hono/node-server": "^1.18.1",
+    "@hono/swagger-ui": "^0.5.2",
     "@hono/zod-validator": "^0.7.2",
     "@prisma/client": "^6.13.0",
     "bcrypt": "^6.0.0",
@@ -32,11 +34,17 @@
     "pino-pretty": "^13.1.1",
     "prisma": "^6.13.0",
     "simple-statistics": "^7.8.8",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui": "^5.27.1",
+    "swagger-ui-dist": "^5.27.1",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
     "zod": "^4.0.14"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
     "nodemon": "^3.1.10",
+    "swagger-cli": "^4.0.4",
     "tsx": "^4.7.1",
     "typescript": "^5.8.3"
   }
