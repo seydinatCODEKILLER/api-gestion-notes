@@ -53,7 +53,10 @@
       "description": "Gestion des affectations des matières aux enseignants"
     },
     { "name": "Trimestre", "description": "Gestion des trimestres scolaires" },
-    { "name": "Alert", "description": "Gestion des alertes pour les étudiants" },
+    {
+      "name": "Alert",
+      "description": "Gestion des alertes pour les étudiants"
+    },
     { "name": "Export", "description": "Gestion de l'exportations des notes" }
   ],
   "components": {
@@ -2160,6 +2163,13 @@
             "in": "path",
             "required": true,
             "schema": { "type": "integer" }
+          },
+          {
+            "name": "trimestreId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID du trimestre du bulletin"
           }
         ],
         "responses": {
@@ -2736,97 +2746,168 @@
       }
     },
     "/exports/grades": {
-  "get": {
-    "tags": ["ExportNotes"],
-    "summary": "Exporter les notes d'une classe pour une matière et un trimestre en PDF",
-    "description": "Génère et télécharge un PDF contenant toutes les notes des élèves pour une matière et un trimestre donné.",
-    "security": [{ "BearerAuth": [] }],
-    "parameters": [
-      {
-        "name": "classId",
-        "in": "query",
-        "description": "ID de la classe",
-        "required": true,
-        "schema": {
-          "type": "integer",
-          "example": 1
-        }
-      },
-      {
-        "name": "subjectId",
-        "in": "query",
-        "description": "ID de la matière",
-        "required": true,
-        "schema": {
-          "type": "integer",
-          "example": 2
-        }
-      },
-      {
-        "name": "trimestreId",
-        "in": "query",
-        "description": "ID du trimestre (optionnel)",
-        "required": false,
-        "schema": {
-          "type": "integer",
-          "example": 1
+      "get": {
+        "tags": ["ExportNotes"],
+        "summary": "Exporter les notes d'une classe pour une matière et un trimestre en PDF",
+        "description": "Génère et télécharge un PDF contenant toutes les notes des élèves pour une matière et un trimestre donné.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "query",
+            "description": "ID de la classe",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "subjectId",
+            "in": "query",
+            "description": "ID de la matière",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 2
+            }
+          },
+          {
+            "name": "trimestreId",
+            "in": "query",
+            "description": "ID du trimestre (optionnel)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF des notes généré avec succès",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Paramètres manquants ou invalides",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorRes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorRes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Aucune note trouvée pour ces critères",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorRes"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur serveur lors de la génération du PDF",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorRes"
+                }
+              }
+            }
+          }
         }
       }
-    ],
-    "responses": {
-      "200": {
-        "description": "PDF des notes généré avec succès",
-        "content": {
-          "application/pdf": {
-            "schema": {
-              "type": "string",
-              "format": "binary"
-            }
+    },
+    "/statistic/global": {
+      "get": {
+        "tags": ["Statistique"],
+        "summary": "Récupérer les statistiques globales",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "anneeScolaireId",
+            "in": "query",
+            "description": "Filtrer par année scolaire (optionnel)",
+            "required": false,
+            "schema": { "type": "integer", "example": 1 }
+          },
+          {
+            "name": "trimestreId",
+            "in": "query",
+            "description": "Identifiant du trimestre",
+            "required": true,
+            "schema": { "type": "integer", "example": 2 }
           }
-        }
-      },
-      "400": {
-        "description": "Paramètres manquants ou invalides",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorRes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Statistiques globales",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "moyenne_generale_globale": {
+                      "type": "number",
+                      "example": 12.75
+                    },
+                    "top5_eleves": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "eleve": {
+                            "type": "string",
+                            "example": "Jean Dupont"
+                          },
+                          "classe": { "type": "string", "example": "6ème A" },
+                          "moyenne": { "type": "number", "example": 15.5 }
+                        }
+                      }
+                    },
+                    "classes_en_difficulte": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "classe": { "type": "string", "example": "4ème B" },
+                          "moyenne_classe": {
+                            "type": "number",
+                            "example": 9.45
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
-          }
-        }
-      },
-      "401": {
-        "description": "Non autorisé",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorRes"
-            }
-          }
-        }
-      },
-      "404": {
-        "description": "Aucune note trouvée pour ces critères",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorRes"
-            }
-          }
-        }
-      },
-      "500": {
-        "description": "Erreur serveur lors de la génération du PDF",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorRes"
-            }
+          },
+          "401": {
+            "description": "Non autorisé (token manquant ou invalide)"
           }
         }
       }
     }
-  }
-}
   }
 }

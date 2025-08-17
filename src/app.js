@@ -16,6 +16,7 @@ import AverageRoute from "./routes/AverageRoute.js";
 import ReportCardRoute from "./routes/ReportCardRoute.js";
 import swaggerStaticApp from "./swagger-static.js";
 import ExportNotesRoute from "./routes/ExportNotesRoute.js";
+import StatistiqueRoute from "./routes/StatistiqueRoutes.js";
 
 const app = new Hono();
 
@@ -37,7 +38,8 @@ const trimestreRoute = new TrimestreRoute();
 const gradeRoute = new GradeRoute();
 const averageRoute = new AverageRoute();
 const reportCardRoute = new ReportCardRoute();
-const exportNotesRoute = new ExportNotesRoute()
+const exportNotesRoute = new ExportNotesRoute();
+const statisticsRoute = new StatistiqueRoute();
 
 app.route("/api/auth", authRoute.routes);
 app.route('/api/teachers', teacherRoute.routes);
@@ -53,6 +55,7 @@ app.route('/api/grades', gradeRoute.routes);
 app.route('/api/averages', averageRoute.routes);
 app.route('/api/report-cards', reportCardRoute.routes);
 app.route("/api/exports", exportNotesRoute.routes);
+app.route("/api/statistic", statisticsRoute.routes);
 
 //Documentation swagger
 app.route("/docs", swaggerStaticApp);
