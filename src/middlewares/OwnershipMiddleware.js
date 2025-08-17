@@ -27,7 +27,7 @@ export default class OwnershipMiddleware {
       }
     }
 
-    return next();
+    return await next();
   }
 
   async checkTeacherClassAccess(ctx, next) {
@@ -50,7 +50,7 @@ export default class OwnershipMiddleware {
       });
     }
 
-    return next();
+    return await next();
   }
 
   async checkStudentAccess(ctx, next) {
@@ -87,7 +87,7 @@ export default class OwnershipMiddleware {
         },
       });
 
-      if (isSelf) return next();
+      if (isSelf) return await next();
     }
 
     throw new HTTPException(403, { message: "Accès non autorisé" });
@@ -186,7 +186,7 @@ export default class OwnershipMiddleware {
         });
     }
 
-    return next();
+    return await next();
   }
 
   async _verifyStudentAccess(userId, alertStudentId) {

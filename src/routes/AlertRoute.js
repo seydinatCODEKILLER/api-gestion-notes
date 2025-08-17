@@ -13,7 +13,6 @@ export default class AlertRoute {
   }
 
   setupRoutes() {
-
     this.router.get(
       "/",
       this.authMiddleware.protect(["admin", "professeur"]),
@@ -30,7 +29,8 @@ export default class AlertRoute {
     this.router.post(
       "/",
       this.authMiddleware.protect(["professeur"]),
-      this.ownershipMiddleware.checkTeacherSubjectAccess,
+      (ctx, next) =>
+        this.ownershipMiddleware.checkTeacherSubjectAccess(ctx, next),
       (ctx) => this.controller.createAlert(ctx)
     );
 
@@ -38,7 +38,7 @@ export default class AlertRoute {
     this.router.get(
       "/:id",
       this.authMiddleware.protect(["admin", "professeur", "eleve"]),
-      this.ownershipMiddleware.checkAlertAccess,
+      (ctx, next) => this.ownershipMiddleware.checkAlertAccess(ctx, next),
       (ctx) => this.controller.getAlert(ctx)
     );
 
@@ -46,7 +46,7 @@ export default class AlertRoute {
     this.router.put(
       "/:id",
       this.authMiddleware.protect(["admin", "professeur"]),
-      this.ownershipMiddleware.checkAlertAccess,
+      (ctx, next) => this.ownershipMiddleware.checkAlertAccess(ctx, next),
       (ctx) => this.controller.updateAlert(ctx)
     );
   }

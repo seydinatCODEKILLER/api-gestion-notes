@@ -13,8 +13,6 @@ export default class ReportCardRoute {
   }
 
   setupRoutes() {
-
-
     // Génération et mise à jour (Admin seulement)
     this.router.post("/", this.authMiddleware.protect(["admin"]), (ctx) =>
       this.controller.generateReportCard(ctx)
@@ -28,25 +26,24 @@ export default class ReportCardRoute {
     this.router.get(
       "/student/:studentId",
       this.authMiddleware.protect(["admin", "professeur", "eleve"]),
-      this.ownershipMiddleware.checkStudentAccess,
+      (ctx, next) => this.ownershipMiddleware.checkStudentAccess(ctx, next),
       (ctx) => this.controller.getStudentReportCards(ctx)
     );
 
     this.router.get(
       "/class/:classId",
       this.authMiddleware.protect(["admin", "professeur"]),
-      this.ownershipMiddleware.checkTeacherClassAccess,
+      (ctx, next) =>
+        this.ownershipMiddleware.checkTeacherClassAccess(ctx, next),
       (ctx) => this.controller.getClassReportCards(ctx)
     );
 
-    // Téléchargement
     this.router.get(
       "/download/:id",
       this.authMiddleware.protect(["admin", "professeur", "eleve"]),
-      this.ownershipMiddleware.checkReportCardAccess,
+      (ctx, next) => this.ownershipMiddleware.checkReportCardAccess(ctx, next),
       (ctx) => this.controller.downloadReportCard(ctx)
     );
-
   }
 
   get routes() {

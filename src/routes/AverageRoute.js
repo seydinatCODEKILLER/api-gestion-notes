@@ -17,7 +17,8 @@ export default class AverageRoute {
     this.router.post(
       "/",
       this.authMiddleware.protect(["admin", "professeur"]),
-      this.ownershipMiddleware.checkTeacherSubjectAccess,
+      (ctx, next) =>
+        this.ownershipMiddleware.checkTeacherSubjectAccess(ctx, next),
       (ctx) => this.controller.createOrUpdateAverage(ctx)
     );
 
@@ -25,7 +26,8 @@ export default class AverageRoute {
     this.router.post(
       "/calculate/:classId",
       this.authMiddleware.protect(["admin", "professeur"]),
-      this.ownershipMiddleware.checkTeacherClassAccess,
+      (ctx, next) =>
+        this.ownershipMiddleware.checkTeacherClassAccess(ctx, next),
       (ctx) => this.controller.calculateClassAverages(ctx)
     );
 
@@ -33,14 +35,15 @@ export default class AverageRoute {
     this.router.get(
       "/student/:studentId",
       this.authMiddleware.protect(["admin", "professeur", "eleve"]),
-      this.ownershipMiddleware.checkStudentAccess,
+      (ctx, next) => this.ownershipMiddleware.checkStudentAccess(ctx, next),
       (ctx) => this.controller.getStudentAverages(ctx)
     );
 
     this.router.get(
       "/class/:classId",
       this.authMiddleware.protect(["admin", "professeur"]),
-      this.ownershipMiddleware.checkTeacherClassAccess,
+      (ctx, next) =>
+        this.ownershipMiddleware.checkTeacherClassAccess(ctx, next),
       (ctx) => this.controller.getClassAverages(ctx)
     );
   }
