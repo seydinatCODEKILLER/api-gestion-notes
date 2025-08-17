@@ -53,7 +53,8 @@
       "description": "Gestion des affectations des matières aux enseignants"
     },
     { "name": "Trimestre", "description": "Gestion des trimestres scolaires" },
-    { "name": "Alert", "description": "Gestion des alertes pour les étudiants" }
+    { "name": "Alert", "description": "Gestion des alertes pour les étudiants" },
+    { "name": "Export", "description": "Gestion de l'exportations des notes" }
   ],
   "components": {
     "securitySchemes": {
@@ -2733,6 +2734,99 @@
           "404": { "description": "Alerte non trouvée" }
         }
       }
+    },
+    "/exports/grades": {
+  "get": {
+    "tags": ["ExportNotes"],
+    "summary": "Exporter les notes d'une classe pour une matière et un trimestre en PDF",
+    "description": "Génère et télécharge un PDF contenant toutes les notes des élèves pour une matière et un trimestre donné.",
+    "security": [{ "BearerAuth": [] }],
+    "parameters": [
+      {
+        "name": "classId",
+        "in": "query",
+        "description": "ID de la classe",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 1
+        }
+      },
+      {
+        "name": "subjectId",
+        "in": "query",
+        "description": "ID de la matière",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 2
+        }
+      },
+      {
+        "name": "trimestreId",
+        "in": "query",
+        "description": "ID du trimestre (optionnel)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "PDF des notes généré avec succès",
+        "content": {
+          "application/pdf": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Paramètres manquants ou invalides",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorRes"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Non autorisé",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorRes"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Aucune note trouvée pour ces critères",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorRes"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Erreur serveur lors de la génération du PDF",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorRes"
+            }
+          }
+        }
+      }
     }
+  }
+}
   }
 }
