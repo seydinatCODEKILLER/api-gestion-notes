@@ -98,4 +98,17 @@ export default class ClassController {
       throw new HTTPException(404, { message: error.message });
     }
   }
+
+  async getClassesByTeacher(ctx) {
+    try {
+      const teacherId = parseInt(ctx.req.param("teacherId"));
+      if (isNaN(teacherId)) throw new Error("ID professeur invalide");
+
+      const classes = await this.service.getClassesByTeacher(teacherId);
+
+      return ctx.json({ success: true, data: classes });
+    } catch (error) {
+      throw new HTTPException(400, { message: error.message });
+    }
+  }
 }

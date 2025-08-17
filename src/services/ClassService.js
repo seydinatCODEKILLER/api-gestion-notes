@@ -140,4 +140,33 @@ export default class ClassService {
       },
     });
   }
+
+  async getClassesByTeacher(teacherId) {
+    if (!teacherId) throw new Error("ID du professeur requis");
+    const teacher = await prisma.teacher.findUnique({
+      where: {id : teacherId}
+    });
+
+    if(!teacher) throw new Error("cette professeur est introuvable");
+
+    const classes = await prisma.class.findMany({
+      where: {
+        classSubjects: {
+          some: {
+            teacherId: teacherId,
+          },
+        },
+        statut: "actif",
+      },
+      include: {
+        niveau: { select: { id: true, libelle: true } },
+        anneeScolaire: { select: { id: true, libelle: true } },
+        _count: { select: { students: true } },
+      },
+      orderBy: { nom: "asc" },
+      distinct: ["id"],
+    });
+
+    return classes;
+  }
 }

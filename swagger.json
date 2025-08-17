@@ -48,7 +48,10 @@
     { "name": "Niveau", "description": "Gestion des niveaux scolaires" },
     { "name": "ReportCard", "description": "Gestion des bulletins scolaires" },
     { "name": "Subject", "description": "Gestion des matières" },
-    { "name": "TeacherSubject", "description": "Gestion des affectations des matières aux enseignants" },
+    {
+      "name": "TeacherSubject",
+      "description": "Gestion des affectations des matières aux enseignants"
+    },
     { "name": "Trimestre", "description": "Gestion des trimestres scolaires" },
     { "name": "Alert", "description": "Gestion des alertes pour les étudiants" }
   ],
@@ -446,15 +449,36 @@
       },
       "GradeCreateReq": {
         "type": "object",
-        "required": ["studentId","subjectId","trimestreId","anneeScolaireId","note","type_note"],
+        "required": [
+          "studentId",
+          "subjectId",
+          "trimestreId",
+          "anneeScolaireId",
+          "note",
+          "type_note"
+        ],
         "properties": {
           "studentId": { "type": "integer", "example": 1 },
           "subjectId": { "type": "integer", "example": 2 },
           "trimestreId": { "type": "integer", "example": 1 },
           "anneeScolaireId": { "type": "integer", "example": 2 },
-          "note": { "type": "number", "minimum": 0, "maximum": 20, "example": 15 },
-          "type_note": { "type": "string", "enum": ["devoir","composition","oral","projet"], "example": "devoir" },
-          "commentaire": { "type": "string", "maxLength": 500, "example": "Très bon travail", "nullable": true }
+          "note": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 20,
+            "example": 15
+          },
+          "type_note": {
+            "type": "string",
+            "enum": ["devoir", "composition", "oral", "projet"],
+            "example": "devoir"
+          },
+          "commentaire": {
+            "type": "string",
+            "maxLength": 500,
+            "example": "Très bon travail",
+            "nullable": true
+          }
         }
       },
       "GradeUpdateReq": {
@@ -462,7 +486,10 @@
         "properties": {
           "note": { "type": "number", "minimum": 0, "maximum": 20 },
           "coefficient": { "type": "number", "minimum": 0.1, "maximum": 10 },
-          "type_note": { "type": "string", "enum": ["devoir","composition","oral","projet"] },
+          "type_note": {
+            "type": "string",
+            "enum": ["devoir", "composition", "oral", "projet"]
+          },
           "commentaire": { "type": "string", "maxLength": 500 }
         }
       },
@@ -477,7 +504,11 @@
           "note": { "type": "number", "example": 15 },
           "type_note": { "type": "string", "example": "devoir" },
           "coefficient": { "type": "number", "example": 1 },
-          "commentaire": { "type": "string", "example": "Très bon travail", "nullable": true },
+          "commentaire": {
+            "type": "string",
+            "example": "Très bon travail",
+            "nullable": true
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -487,7 +518,11 @@
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "libelle": { "type": "string", "example": "Seconde" },
-          "statut": { "type": "string", "enum": ["actif","inactif"], "example": "actif" },
+          "statut": {
+            "type": "string",
+            "enum": ["actif", "inactif"],
+            "example": "actif"
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -503,7 +538,7 @@
         "type": "object",
         "properties": {
           "libelle": { "type": "string", "minLength": 2 },
-          "statut": { "type": "string", "enum": ["actif","inactif"] }
+          "statut": { "type": "string", "enum": ["actif", "inactif"] }
         }
       },
       "ReportCard": {
@@ -513,8 +548,16 @@
           "studentId": { "type": "integer", "example": 5 },
           "trimestreId": { "type": "integer", "example": 2 },
           "rang_classe": { "type": "integer", "example": 3, "nullable": true },
-          "appreciation_generale": { "type": "string", "example": "Excellent travail", "nullable": true },
-          "chemin_fichier": { "type": "string", "example": "/reports/2025/report_5.pdf", "nullable": true },
+          "appreciation_generale": {
+            "type": "string",
+            "example": "Excellent travail",
+            "nullable": true
+          },
+          "chemin_fichier": {
+            "type": "string",
+            "example": "/reports/2025/report_5.pdf",
+            "nullable": true
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -526,8 +569,14 @@
           "studentId": { "type": "integer", "example": 5 },
           "trimestreId": { "type": "integer", "example": 2 },
           "rang_classe": { "type": "integer", "example": 3 },
-          "appreciation_generale": { "type": "string", "example": "Excellent travail" },
-          "chemin_fichier": { "type": "string", "example": "/reports/2025/report_5.pdf" },
+          "appreciation_generale": {
+            "type": "string",
+            "example": "Excellent travail"
+          },
+          "chemin_fichier": {
+            "type": "string",
+            "example": "/reports/2025/report_5.pdf"
+          },
           "file_path": { "type": "string", "example": "/tmp/report_5.pdf" }
         }
       },
@@ -535,7 +584,10 @@
         "type": "object",
         "properties": {
           "rang_classe": { "type": "integer", "example": 2 },
-          "appreciation_generale": { "type": "string", "example": "Très bon travail" }
+          "appreciation_generale": {
+            "type": "string",
+            "example": "Très bon travail"
+          }
         }
       },
       "Subject": {
@@ -545,7 +597,11 @@
           "nom": { "type": "string", "example": "Mathématiques" },
           "niveauId": { "type": "integer", "example": 2 },
           "coefficient": { "type": "number", "example": 3 },
-          "description": { "type": "string", "example": "Cours de maths de base", "nullable": true },
+          "description": {
+            "type": "string",
+            "example": "Cours de maths de base",
+            "nullable": true
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -557,7 +613,10 @@
           "nom": { "type": "string", "example": "Mathématiques" },
           "niveauId": { "type": "integer", "example": 2 },
           "coefficient": { "type": "number", "example": 3 },
-          "description": { "type": "string", "example": "Cours de maths de base" }
+          "description": {
+            "type": "string",
+            "example": "Cours de maths de base"
+          }
         }
       },
       "SubjectUpdateReq": {
@@ -566,7 +625,11 @@
           "nom": { "type": "string", "example": "Mathématiques" },
           "niveauId": { "type": "integer", "example": 2 },
           "coefficient": { "type": "number", "example": 3 },
-          "description": { "type": "string", "example": "Cours de maths de base", "nullable": true }
+          "description": {
+            "type": "string",
+            "example": "Cours de maths de base",
+            "nullable": true
+          }
         }
       },
       "TeacherSubject": {
@@ -593,7 +656,11 @@
           "id": { "type": "integer", "example": 1 },
           "libelle": { "type": "string", "example": "T1" },
           "anneeScolaireId": { "type": "integer", "example": 2025 },
-          "statut": { "type": "string", "enum": ["actif", "inactif"], "example": "actif" },
+          "statut": {
+            "type": "string",
+            "enum": ["actif", "inactif"],
+            "example": "actif"
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -618,12 +685,27 @@
         "properties": {
           "id": { "type": "integer", "example": 1 },
           "studentId": { "type": "integer", "example": 12 },
-          "type": { "type": "string", "enum": ["note_basse", "absentéisme", "comportement"], "example": "note_basse" },
+          "type": {
+            "type": "string",
+            "enum": ["note_basse", "absentéisme", "comportement"],
+            "example": "note_basse"
+          },
           "subjectId": { "type": "integer", "example": 5, "nullable": true },
           "trimestre": { "type": "integer", "example": 2 },
-          "message": { "type": "string", "example": "L’élève a des difficultés en mathématiques" },
-          "priorite": { "type": "string", "enum": ["faible", "moyenne", "haute"], "example": "moyenne" },
-          "statut": { "type": "string", "enum": ["nouveau", "en_cours", "resolu"], "example": "nouveau" },
+          "message": {
+            "type": "string",
+            "example": "L’élève a des difficultés en mathématiques"
+          },
+          "priorite": {
+            "type": "string",
+            "enum": ["faible", "moyenne", "haute"],
+            "example": "moyenne"
+          },
+          "statut": {
+            "type": "string",
+            "enum": ["nouveau", "en_cours", "resolu"],
+            "example": "nouveau"
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -633,19 +715,41 @@
         "required": ["studentId", "type", "trimestre", "message"],
         "properties": {
           "studentId": { "type": "integer", "example": 12 },
-          "type": { "type": "string", "enum": ["note_basse", "absentéisme", "comportement"], "example": "note_basse" },
+          "type": {
+            "type": "string",
+            "enum": ["note_basse", "absentéisme", "comportement"],
+            "example": "note_basse"
+          },
           "subjectId": { "type": "integer", "example": 5, "nullable": true },
           "trimestre": { "type": "integer", "example": 2 },
-          "message": { "type": "string", "example": "L’élève a des difficultés en mathématiques" },
-          "priorite": { "type": "string", "enum": ["faible", "moyenne", "haute"], "example": "moyenne" }
+          "message": {
+            "type": "string",
+            "example": "L’élève a des difficultés en mathématiques"
+          },
+          "priorite": {
+            "type": "string",
+            "enum": ["faible", "moyenne", "haute"],
+            "example": "moyenne"
+          }
         }
       },
       "AlertUpdateReq": {
         "type": "object",
         "properties": {
-          "statut": { "type": "string", "enum": ["nouveau", "en_cours", "resolu"], "example": "en_cours" },
-          "priorite": { "type": "string", "enum": ["faible", "moyenne", "haute"], "example": "haute" },
-          "message": { "type": "string", "example": "L’élève a montré une amélioration" }
+          "statut": {
+            "type": "string",
+            "enum": ["nouveau", "en_cours", "resolu"],
+            "example": "en_cours"
+          },
+          "priorite": {
+            "type": "string",
+            "enum": ["faible", "moyenne", "haute"],
+            "example": "haute"
+          },
+          "message": {
+            "type": "string",
+            "example": "L’élève a montré une amélioration"
+          }
         }
       }
     }
@@ -1420,6 +1524,50 @@
         }
       }
     },
+    "/classes/teacher/{teacherId}": {
+      "get": {
+        "tags": ["Classe"],
+        "summary": "Récupérer toutes les classes d'un professeur",
+        "description": "Retourne la liste des classes où le professeur enseigne au moins une matière",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID du professeur"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des classes du professeur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Class" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requête invalide ou ID professeur non valide",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/class-subjects": {
       "post": {
         "tags": ["Classe - Matière"],
@@ -1533,11 +1681,39 @@
         "tags": ["Grade"],
         "summary": "Créer une note",
         "security": [{ "BearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GradeCreateReq" } } } },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GradeCreateReq" }
+            }
+          }
+        },
         "responses": {
-          "201": { "description": "Note créée avec succès", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Grade" } } } },
-          "400": { "description": "Erreur de validation", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } },
-          "401": { "description": "Non autorisé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } }
+          "201": {
+            "description": "Note créée avec succès",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Grade" }
+              }
+            }
+          },
+          "400": {
+            "description": "Erreur de validation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          }
         }
       }
     },
@@ -1546,24 +1722,87 @@
         "tags": ["Grade"],
         "summary": "Mettre à jour une note",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GradeUpdateReq" } } } },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GradeUpdateReq" }
+            }
+          }
+        },
         "responses": {
-          "200": { "description": "Note mise à jour avec succès", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Grade" } } } },
-          "400": { "description": "Erreur de validation", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } },
-          "401": { "description": "Non autorisé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } },
-          "404": { "description": "Note non trouvée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } }
+          "200": {
+            "description": "Note mise à jour avec succès",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Grade" }
+              }
+            }
+          },
+          "400": {
+            "description": "Erreur de validation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          },
+          "404": {
+            "description": "Note non trouvée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          }
         }
       },
       "delete": {
         "tags": ["Grade"],
         "summary": "Supprimer une note",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
           "204": { "description": "Note supprimée" },
-          "401": { "description": "Non autorisé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } },
-          "404": { "description": "Note non trouvée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } }
+          "401": {
+            "description": "Non autorisé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          },
+          "404": {
+            "description": "Note non trouvée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          }
         }
       }
     },
@@ -1572,11 +1811,42 @@
         "tags": ["Grade"],
         "summary": "Récupérer les notes d'un élève",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "studentId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Liste des notes de l'élève", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Grade" } } } } },
-          "401": { "description": "Non autorisé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } },
-          "404": { "description": "Élève non trouvé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } }
+          "200": {
+            "description": "Liste des notes de l'élève",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Grade" }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          },
+          "404": {
+            "description": "Élève non trouvé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          }
         }
       }
     },
@@ -1585,11 +1855,42 @@
         "tags": ["Grade"],
         "summary": "Récupérer les notes d'une classe",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "classId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Liste des notes de la classe", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Grade" } } } } },
-          "401": { "description": "Non autorisé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } },
-          "404": { "description": "Classe non trouvée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorRes" } } } }
+          "200": {
+            "description": "Liste des notes de la classe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Grade" }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          },
+          "404": {
+            "description": "Classe non trouvée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorRes" }
+              }
+            }
+          }
         }
       }
     },
@@ -1603,7 +1904,10 @@
             "description": "Liste des niveaux",
             "content": {
               "application/json": {
-                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Niveau" } }
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Niveau" }
+                }
               }
             }
           },
@@ -1616,10 +1920,21 @@
         "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NiveauCreateReq" } } }
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NiveauCreateReq" }
+            }
+          }
         },
         "responses": {
-          "201": { "description": "Niveau créé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Niveau" } } } },
+          "201": {
+            "description": "Niveau créé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Niveau" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" }
         }
@@ -1630,9 +1945,23 @@
         "tags": ["Niveau"],
         "summary": "Récupérer un niveau par ID",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Détails du niveau", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Niveau" } } } },
+          "200": {
+            "description": "Détails du niveau",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Niveau" }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Niveau non trouvé" }
         }
@@ -1641,13 +1970,31 @@
         "tags": ["Niveau"],
         "summary": "Mettre à jour un niveau",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NiveauUpdateReq" } } }
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NiveauUpdateReq" }
+            }
+          }
         },
         "responses": {
-          "200": { "description": "Niveau mis à jour", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Niveau" } } } },
+          "200": {
+            "description": "Niveau mis à jour",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Niveau" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Niveau non trouvé" }
@@ -1659,9 +2006,23 @@
         "tags": ["Niveau"],
         "summary": "Supprimer un niveau (soft delete)",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Niveau supprimé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Niveau" } } } },
+          "200": {
+            "description": "Niveau supprimé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Niveau" }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Niveau non trouvé" }
         }
@@ -1672,9 +2033,23 @@
         "tags": ["Niveau"],
         "summary": "Restaurer un niveau supprimé",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Niveau restauré", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Niveau" } } } },
+          "200": {
+            "description": "Niveau restauré",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Niveau" }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Niveau non trouvé" }
         }
@@ -1687,10 +2062,21 @@
         "security": [{ "BearerAuth": [] }],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReportCardCreateReq" } } }
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReportCardCreateReq" }
+            }
+          }
         },
         "responses": {
-          "201": { "description": "Bulletin généré", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReportCard" } } } },
+          "201": {
+            "description": "Bulletin généré",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ReportCard" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" }
         }
@@ -1701,13 +2087,31 @@
         "tags": ["ReportCard"],
         "summary": "Mettre à jour un bulletin scolaire",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "requestBody": {
           "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReportCardUpdateReq" } } }
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReportCardUpdateReq" }
+            }
+          }
         },
         "responses": {
-          "200": { "description": "Bulletin mis à jour", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReportCard" } } } },
+          "200": {
+            "description": "Bulletin mis à jour",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ReportCard" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Bulletin non trouvé" }
@@ -1719,9 +2123,26 @@
         "tags": ["ReportCard"],
         "summary": "Récupérer les bulletins d'un élève",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "studentId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Liste des bulletins de l'élève", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ReportCard" } } } } },
+          "200": {
+            "description": "Liste des bulletins de l'élève",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ReportCard" }
+                }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" },
           "403": { "description": "Accès refusé" }
         }
@@ -1732,9 +2153,26 @@
         "tags": ["ReportCard"],
         "summary": "Récupérer les bulletins d'une classe",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "classId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Liste des bulletins de la classe", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/ReportCard" } } } } },
+          "200": {
+            "description": "Liste des bulletins de la classe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ReportCard" }
+                }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" },
           "403": { "description": "Accès refusé" }
         }
@@ -1745,7 +2183,14 @@
         "tags": ["ReportCard"],
         "summary": "Télécharger un bulletin scolaire",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
           "200": { "description": "Téléchargement du fichier PDF" },
           "401": { "description": "Non autorisé" },
@@ -1760,7 +2205,17 @@
         "summary": "Récupérer toutes les matières",
         "security": [{ "BearerAuth": [] }],
         "responses": {
-          "200": { "description": "Liste des matières", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Subject" } } } } },
+          "200": {
+            "description": "Liste des matières",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Subject" }
+                }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" }
         }
       },
@@ -1768,9 +2223,23 @@
         "tags": ["Subject"],
         "summary": "Créer une matière",
         "security": [{ "BearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SubjectCreateReq" } } } },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SubjectCreateReq" }
+            }
+          }
+        },
         "responses": {
-          "201": { "description": "Matière créée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subject" } } } },
+          "201": {
+            "description": "Matière créée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Subject" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" }
         }
@@ -1781,9 +2250,23 @@
         "tags": ["Subject"],
         "summary": "Récupérer une matière par ID",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Détails de la matière", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subject" } } } },
+          "200": {
+            "description": "Détails de la matière",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Subject" }
+              }
+            }
+          },
           "404": { "description": "Matière non trouvée" }
         }
       },
@@ -1791,10 +2274,31 @@
         "tags": ["Subject"],
         "summary": "Mettre à jour une matière",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SubjectUpdateReq" } } } },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SubjectUpdateReq" }
+            }
+          }
+        },
         "responses": {
-          "200": { "description": "Matière mise à jour", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subject" } } } },
+          "200": {
+            "description": "Matière mise à jour",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Subject" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Matière non trouvée" }
@@ -1806,9 +2310,23 @@
         "tags": ["Subject"],
         "summary": "Supprimer une matière (soft delete)",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Matière supprimée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subject" } } } },
+          "200": {
+            "description": "Matière supprimée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Subject" }
+              }
+            }
+          },
           "404": { "description": "Matière non trouvée" }
         }
       }
@@ -1818,9 +2336,23 @@
         "tags": ["Subject"],
         "summary": "Restaurer une matière supprimée",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Matière restaurée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Subject" } } } },
+          "200": {
+            "description": "Matière restaurée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Subject" }
+              }
+            }
+          },
           "404": { "description": "Matière non trouvée" }
         }
       }
@@ -1831,7 +2363,17 @@
         "summary": "Récupérer toutes les affectations enseignant-matière",
         "security": [{ "BearerAuth": [] }],
         "responses": {
-          "200": { "description": "Liste des affectations", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TeacherSubject" } } } } },
+          "200": {
+            "description": "Liste des affectations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/TeacherSubject" }
+                }
+              }
+            }
+          },
           "401": { "description": "Non autorisé" }
         }
       },
@@ -1839,9 +2381,25 @@
         "tags": ["TeacherSubject"],
         "summary": "Affecter une matière à un enseignant",
         "security": [{ "BearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TeacherSubjectCreateReq" } } } },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherSubjectCreateReq"
+              }
+            }
+          }
+        },
         "responses": {
-          "201": { "description": "Affectation créée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TeacherSubject" } } } },
+          "201": {
+            "description": "Affectation créée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TeacherSubject" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" }
         }
@@ -1852,9 +2410,23 @@
         "tags": ["TeacherSubject"],
         "summary": "Récupérer une affectation par ID",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Détails de l'affectation", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TeacherSubject" } } } },
+          "200": {
+            "description": "Détails de l'affectation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TeacherSubject" }
+              }
+            }
+          },
           "404": { "description": "Affectation non trouvée" }
         }
       },
@@ -1862,9 +2434,23 @@
         "tags": ["TeacherSubject"],
         "summary": "Supprimer une affectation enseignant-matière",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Affectation supprimée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TeacherSubject" } } } },
+          "200": {
+            "description": "Affectation supprimée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TeacherSubject" }
+              }
+            }
+          },
           "404": { "description": "Affectation non trouvée" }
         }
       }
@@ -1874,9 +2460,26 @@
         "tags": ["TeacherSubject"],
         "summary": "Récupérer toutes les matières affectées à un enseignant",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "teacherId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Liste des matières de l'enseignant", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TeacherSubject" } } } } },
+          "200": {
+            "description": "Liste des matières de l'enseignant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/TeacherSubject" }
+                }
+              }
+            }
+          },
           "404": { "description": "Enseignant non trouvé" }
         }
       }
@@ -1886,16 +2489,40 @@
         "tags": ["Trimestre"],
         "summary": "Récupérer tous les trimestres",
         "responses": {
-          "200": { "description": "Liste des trimestres", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Trimestre" } } } } }
+          "200": {
+            "description": "Liste des trimestres",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Trimestre" }
+                }
+              }
+            }
+          }
         }
       },
       "post": {
         "tags": ["Trimestre"],
         "summary": "Créer un nouveau trimestre (Admin)",
         "security": [{ "BearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TrimestreCreateReq" } } } },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TrimestreCreateReq" }
+            }
+          }
+        },
         "responses": {
-          "201": { "description": "Trimestre créé", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Trimestre" } } } },
+          "201": {
+            "description": "Trimestre créé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Trimestre" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" }
         }
@@ -1906,7 +2533,14 @@
         "tags": ["Trimestre"],
         "summary": "Récupérer le trimestre courant",
         "responses": {
-          "200": { "description": "Trimestre courant", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Trimestre" } } } }
+          "200": {
+            "description": "Trimestre courant",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Trimestre" }
+              }
+            }
+          }
         }
       }
     },
@@ -1914,9 +2548,23 @@
       "get": {
         "tags": ["Trimestre"],
         "summary": "Récupérer un trimestre par ID",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Détails du trimestre", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Trimestre" } } } },
+          "200": {
+            "description": "Détails du trimestre",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Trimestre" }
+              }
+            }
+          },
           "404": { "description": "Trimestre non trouvé" }
         }
       },
@@ -1924,10 +2572,31 @@
         "tags": ["Trimestre"],
         "summary": "Mettre à jour un trimestre (Admin)",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TrimestreUpdateReq" } } } },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TrimestreUpdateReq" }
+            }
+          }
+        },
         "responses": {
-          "200": { "description": "Trimestre mis à jour", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Trimestre" } } } },
+          "200": {
+            "description": "Trimestre mis à jour",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Trimestre" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Trimestre non trouvé" }
@@ -1936,7 +2605,14 @@
       "patch": {
         "tags": ["Trimestre"],
         "summary": "Supprimer ou restaurer un trimestre (Admin)",
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {}
       }
     },
@@ -1946,16 +2622,40 @@
         "summary": "Récupérer toutes les alertes (Admin et Professeur)",
         "security": [{ "BearerAuth": [] }],
         "responses": {
-          "200": { "description": "Liste des alertes", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Alert" } } } } }
+          "200": {
+            "description": "Liste des alertes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Alert" }
+                }
+              }
+            }
+          }
         }
       },
       "post": {
         "tags": ["Alert"],
         "summary": "Créer une alerte (Professeur)",
         "security": [{ "BearerAuth": [] }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AlertCreateReq" } } } },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AlertCreateReq" }
+            }
+          }
+        },
         "responses": {
-          "201": { "description": "Alerte créée", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Alert" } } } },
+          "201": {
+            "description": "Alerte créée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Alert" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" }
         }
@@ -1967,7 +2667,10 @@
         "summary": "Récupérer les statistiques des alertes (Admin et Professeur)",
         "security": [{ "BearerAuth": [] }],
         "responses": {
-          "200": { "description": "Statistiques des alertes", "content": { "application/json": {} } }
+          "200": {
+            "description": "Statistiques des alertes",
+            "content": { "application/json": {} }
+          }
         }
       }
     },
@@ -1976,9 +2679,23 @@
         "tags": ["Alert"],
         "summary": "Récupérer une alerte par ID",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
         "responses": {
-          "200": { "description": "Détails de l’alerte", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Alert" } } } },
+          "200": {
+            "description": "Détails de l’alerte",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Alert" }
+              }
+            }
+          },
           "404": { "description": "Alerte non trouvée" }
         }
       },
@@ -1986,10 +2703,31 @@
         "tags": ["Alert"],
         "summary": "Mettre à jour une alerte (Admin ou Professeur concerné)",
         "security": [{ "BearerAuth": [] }],
-        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AlertUpdateReq" } } } },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AlertUpdateReq" }
+            }
+          }
+        },
         "responses": {
-          "200": { "description": "Alerte mise à jour", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Alert" } } } },
+          "200": {
+            "description": "Alerte mise à jour",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Alert" }
+              }
+            }
+          },
           "400": { "description": "Erreur de validation" },
           "401": { "description": "Non autorisé" },
           "404": { "description": "Alerte non trouvée" }
