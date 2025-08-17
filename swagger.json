@@ -9,6 +9,10 @@
     {
       "url": "http://localhost:3000/api",
       "description": "Dev local"
+    },
+    {
+      "url": "https://api.gestion-notes.com/api",
+      "description": "Production"
     }
   ],
   "tags": [

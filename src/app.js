@@ -14,13 +14,8 @@ import TrimestreRoute from "./routes/TrimestreRoute.js";
 import GradeRoute from "./routes/GradeRoute.js";
 import AverageRoute from "./routes/AverageRoute.js";
 import ReportCardRoute from "./routes/ReportCardRoute.js";
-import path from "path";
-import swaggerDist from "swagger-ui-dist";
-import { fileURLToPath } from "url";
-import { serveStatic } from "hono/serve-static";
 import swaggerStaticApp from "./swagger-static.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = new Hono();
 
 // Middlewares globaux
@@ -56,6 +51,7 @@ app.route('/api/grades', gradeRoute.routes);
 app.route('/api/averages', averageRoute.routes);
 app.route('/api/report-cards', reportCardRoute.routes);
 
+//Documentation swagger
 app.route("/docs", swaggerStaticApp);
 
 export default app;
