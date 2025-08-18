@@ -101,14 +101,14 @@ export default class StudentService {
 
       avatarUrl = await this.handleAvatarUpload(avatar, uploadPrefix);
 
-       if (classId) {
-         const classExists = await prisma.class.findUnique({
-           where: { id: classId },
-         });
-         if (!classExists) {
-           throw new Error("Classe introuvable");
-         }
-       }
+      if (classId) {
+        const classExists = await prisma.class.findUnique({
+          where: { id: classId },
+        });
+        if (!classExists) {
+          throw new Error("Classe introuvable");
+        }
+      }
 
       return await prisma.$transaction(async (tx) => {
         const hashedPassword = await this.passwordHasher.hash(password);
@@ -292,5 +292,27 @@ export default class StudentService {
   async handleAvatarUpload(avatarFile, namePrefix) {
     if (!avatarFile) return null;
     return await this.avatarUploader.upload(avatarFile, namePrefix);
+  }
+
+  async getStats(classId) {
+    const [total, active, inactive] = await Promise.all([
+      prisma.student.count({
+        where: classId ? { classId } : undefined,
+      }),
+      prisma.student.count({
+        where: {
+          user: { statut: "actif" },
+          ...(classId ? { classId } : {}),
+        },
+      }),
+      prisma.student.count({
+        where: {
+          user: { statut: "inactif" },
+          ...(classId ? { classId } : {}),
+        },
+      }),
+    ]);
+
+    return { total, active, inactive };
   }
 }

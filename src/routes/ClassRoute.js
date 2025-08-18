@@ -17,6 +17,7 @@ export default class ClassRoute {
     this.router.put("/:id", this.authMiddleware.protect(["admin"]), (ctx) => this.controller.updateClass(ctx));
     this.router.patch("/:id/delete", this.authMiddleware.protect(["admin"]), (ctx) => this.controller.deleteClass(ctx));
     this.router.patch("/:id/restore", this.authMiddleware.protect(["admin"]), (ctx) => this.controller.restoreClass(ctx));
+    this.router.get("/stats", this.authMiddleware.protect(["admin"]), (ctx) => this.controller.getStats(ctx));
     this.router.get("/teacher/:teacherId", this.authMiddleware.protect(["admin","professeur"]), (ctx) => this.controller.getClassesByTeacher(ctx));
   }
 

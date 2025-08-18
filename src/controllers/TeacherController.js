@@ -115,4 +115,13 @@ export default class TeacherController {
   async restoreTeacher(ctx) {
     return this.handleStatusChange(ctx, "restore");
   }
+
+  async getStats(ctx) {
+    try {
+      const stats = await this.service.getStats();
+      return ctx.json({ success: true, data: stats });
+    } catch (error) {
+      throw new HTTPException(500, { message: error.message });
+    }
+  }
 }

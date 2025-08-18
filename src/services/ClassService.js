@@ -144,10 +144,10 @@ export default class ClassService {
   async getClassesByTeacher(teacherId) {
     if (!teacherId) throw new Error("ID du professeur requis");
     const teacher = await prisma.teacher.findUnique({
-      where: {id : teacherId}
+      where: { id: teacherId },
     });
 
-    if(!teacher) throw new Error("cette professeur est introuvable");
+    if (!teacher) throw new Error("cette professeur est introuvable");
 
     const classes = await prisma.class.findMany({
       where: {
@@ -168,5 +168,15 @@ export default class ClassService {
     });
 
     return classes;
+  }
+
+  async getStats() {
+    const [total, active, inactive] = await Promise.all([
+      prisma.class.count(),
+      prisma.class.count({ where: { statut: "actif" } }),
+      prisma.class.count({ where: { statut: "inactif" } }),
+    ]);
+
+    return { total, active, inactive };
   }
 }

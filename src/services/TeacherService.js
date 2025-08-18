@@ -303,4 +303,14 @@ export default class TeacherService {
       },
     });
   }
+
+  async getStats() {
+    const [total, active, inactive] = await Promise.all([
+      prisma.teacher.count(),
+      prisma.teacher.count({ where: { user: { statut: "actif" } } }),
+      prisma.teacher.count({ where: { user: { statut: "inactif" } } }),
+    ]);
+
+    return { total, active, inactive };
+  }
 }

@@ -99,6 +99,15 @@ export default class ClassController {
     }
   }
 
+  async getStats(ctx) {
+    try {
+      const stats = await this.service.getStats();
+      return ctx.json({ success: true, data: stats });
+    } catch (error) {
+      throw new HTTPException(500, { message: error.message });
+    }
+  }
+
   async getClassesByTeacher(ctx) {
     try {
       const teacherId = parseInt(ctx.req.param("teacherId"));

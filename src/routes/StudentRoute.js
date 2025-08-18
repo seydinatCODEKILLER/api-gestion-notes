@@ -14,6 +14,7 @@ export default class StudentRoute {
     this.router.use("*", this.authMiddleware.protect(["admin"]));
     this.router.get("/", (ctx) => this.controller.getAllStudents(ctx));
     this.router.get("/:id", (ctx) => this.controller.getStudent(ctx));
+    this.router.get("/stats", (ctx) => this.controller.getStats(ctx));
     this.router.post("/", (ctx) => this.controller.createStudent(ctx));
     this.router.put("/:id", (ctx) => this.controller.updateStudent(ctx));
     this.router.patch("/:id/delete", (ctx) => this.controller.deleteStudent(ctx));
