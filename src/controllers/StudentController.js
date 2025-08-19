@@ -124,9 +124,7 @@ export default class StudentController {
   async getStats(ctx) {
     try {
       const { classId } = ctx.req.query();
-      const stats = await this.service.getStats(
-        classId ? parseInt(classId) : undefined
-      );
+      const stats = await this.service.getStats();
       return ctx.json({ success: true, data: stats });
     } catch (error) {
       throw new HTTPException(500, { message: error.message });

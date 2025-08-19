@@ -294,23 +294,11 @@ export default class StudentService {
     return await this.avatarUploader.upload(avatarFile, namePrefix);
   }
 
-  async getStats(classId) {
+  async getStats() {
     const [total, active, inactive] = await Promise.all([
-      prisma.student.count({
-        where: classId ? { classId } : undefined,
-      }),
-      prisma.student.count({
-        where: {
-          user: { statut: "actif" },
-          ...(classId ? { classId } : {}),
-        },
-      }),
-      prisma.student.count({
-        where: {
-          user: { statut: "inactif" },
-          ...(classId ? { classId } : {}),
-        },
-      }),
+      prisma.student.count(),
+      prisma.student.count({ where: {user: { statut: "actif" }}}),
+      prisma.student.count({where: {user: { statut: "inactif" }}}),
     ]);
 
     return { total, active, inactive };

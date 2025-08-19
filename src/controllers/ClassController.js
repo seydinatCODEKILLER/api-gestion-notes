@@ -88,7 +88,7 @@ export default class ClassController {
   async getClass(ctx) {
     try {
       const classId = parseInt(ctx.req.param("id"));
-      if (isNaN(classId)) throw new Error("ID invalide");
+      if (isNaN(classId)) throw new Error("ID invalide classe");
 
       const classe = await this.service.getClassById(classId);
       if (!classe) throw new Error("Classe non trouvée");
