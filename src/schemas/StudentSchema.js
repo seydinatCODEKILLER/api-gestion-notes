@@ -18,11 +18,6 @@ export default class StudentSchema {
         message: "La date de naissance doit être dans le passé",
       }),
       lieu_naissance: z.string().optional(),
-
-      nom_parent: z.string().min(2),
-      telephone_parent: z.string().regex(this.phoneRegex),
-      email_parent: z.string().email().optional(),
-
       classId: z.preprocess(
         (val) => (val ? parseInt(val) : undefined),
         z.number().int().positive().optional()
@@ -49,9 +44,6 @@ export default class StudentSchema {
           .refine((val) => !isNaN(Date.parse(val)))
           .optional(),
         lieu_naissance: z.string().optional(),
-        nom_parent: z.string().min(2).optional(),
-        telephone_parent: z.string().regex(this.phoneRegex).optional(),
-        email_parent: z.string().email().optional(),
         classId: z.number().int().positive().nullable().optional(),
         avatar: z
           .union([z.instanceof(File), z.instanceof(Buffer), z.string().url()])

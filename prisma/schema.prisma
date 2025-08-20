@@ -107,9 +107,6 @@ model Student {
   classId          Int?
   date_naissance   DateTime?   @db.Date
   lieu_naissance   String?     @db.VarChar(100)
-  nom_parent       String?     @db.VarChar(100)
-  telephone_parent String?     @db.VarChar(20)
-  email_parent     String?     @db.VarChar(255)
   date_inscription DateTime    @default(now()) @db.Date
   grades           Grade[]
   averages         Average[]

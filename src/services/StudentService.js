@@ -41,6 +41,7 @@ export default class StudentService {
             id: true,
             nom: true,
             prenom: true,
+            adresse: true,
             email: true,
             telephone: true,
             avatar: true,
@@ -190,7 +191,10 @@ export default class StudentService {
       await tx.user.update({
         where: { id: student.userId },
         data: {
-          ...rest,
+          nom: rest.nom,
+          prenom: rest.prenom,
+          telephone: rest.telephone,
+          adresse: rest.adresse,
           password: hashedPassword,
           avatar: avatarUrl,
         },
@@ -297,8 +301,8 @@ export default class StudentService {
   async getStats() {
     const [total, active, inactive] = await Promise.all([
       prisma.student.count(),
-      prisma.student.count({ where: {user: { statut: "actif" }}}),
-      prisma.student.count({where: {user: { statut: "inactif" }}}),
+      prisma.student.count({ where: { user: { statut: "actif" } } }),
+      prisma.student.count({ where: { user: { statut: "inactif" } } }),
     ]);
 
     return { total, active, inactive };
