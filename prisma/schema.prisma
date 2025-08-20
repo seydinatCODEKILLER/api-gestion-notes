@@ -253,7 +253,6 @@ model Alert {
 model AnneeScolaire {
   id             Int             @id @default(autoincrement())
   libelle        String          @unique @db.VarChar(20)
-  is_active      Boolean         @default(false)
   statut         Statut          @default(inactif)
   grades         Grade[]
   averages       Average[]

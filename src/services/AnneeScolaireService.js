@@ -64,7 +64,7 @@ export default class AnneeScolaireService {
 
   async getActiveAnnee() {
     return prisma.anneeScolaire.findFirst({
-      where: { is_active: true },
+      where: { statut: "actif" },
     });
   }
 
@@ -117,17 +117,14 @@ export default class AnneeScolaireService {
 
       if (to === "actif") {
         await tx.anneeScolaire.updateMany({
-          where: { is_active: true },
-          data: { is_active: false },
+          where: { statut: "actif" },
+          data: { statut: "inactif" },
         });
       }
 
       return tx.anneeScolaire.update({
         where: { id: anneeId },
-        data: {
-          statut: to,
-          is_active: to === "actif",
-        },
+        data: { statut: to },
       });
     });
   }

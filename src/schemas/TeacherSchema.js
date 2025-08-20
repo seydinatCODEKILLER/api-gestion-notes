@@ -34,9 +34,6 @@ export default class TeacherSchema {
     telephone: z.string().regex(this.phoneRegex).optional(),
     adresse: z.string().optional(),
     specialite: z.string().min(2).optional(),
-    date_embauche: z.string()
-      .refine(val => !isNaN(Date.parse(val)), { message: "Date invalide" })
-      .optional(),
     avatar: z.instanceof(File).optional(),
     currentPassword: z.string().min(6).optional(),
     newPassword: z.string().min(6).optional()

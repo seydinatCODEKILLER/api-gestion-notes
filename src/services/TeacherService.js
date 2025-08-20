@@ -41,6 +41,7 @@ export default class TeacherService {
             prenom: true,
             email: true,
             telephone: true,
+            adresse: true,
             avatar: true,
             statut: true,
             date_creation: true,
