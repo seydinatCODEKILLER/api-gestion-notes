@@ -9,54 +9,72 @@ export default class TeacherService {
   }
 
   async getAllTeachers(options = {}) {
-    const {
-      includeInactive = false,
-      search = "",
-      page = 1,
-      pageSize = 10,
-    } = options;
+  const {
+    includeInactive = false,
+    search = "",
+    page = 1,
+    pageSize = 10,
+    includeSubjects = false,
+  } = options;
 
-    return prisma.teacher.findMany({
-      where: {
-        AND: [
-          {
-            user: {
-              statut: includeInactive ? undefined : "actif",
-              OR: search
-                ? [
-                    { nom: { contains: search, mode: "insensitive" } },
-                    { prenom: { contains: search, mode: "insensitive" } },
-                    { email: { contains: search, mode: "insensitive" } },
-                  ]
-                : undefined,
-            },
-          },
-        ],
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            nom: true,
-            prenom: true,
-            email: true,
-            telephone: true,
-            adresse: true,
-            avatar: true,
-            statut: true,
-            date_creation: true,
+  return prisma.teacher.findMany({
+    where: {
+      AND: [
+        {
+          user: {
+            statut: includeInactive ? undefined : "actif",
+            OR: search
+              ? [
+                  { nom: { contains: search, mode: "insensitive" } },
+                  { prenom: { contains: search, mode: "insensitive" } },
+                  { email: { contains: search, mode: "insensitive" } },
+                ]
+              : undefined,
           },
         },
-      },
-      orderBy: {
-        user: {
-          nom: "asc",
+      ],
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          nom: true,
+          prenom: true,
+          email: true,
+          telephone: true,
+          adresse: true,
+          avatar: true,
+          statut: true,
+          date_creation: true,
         },
       },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    });
-  }
+      teacherSubjects: includeSubjects ? {
+        include: {
+          subject: {
+            select: {
+              id: true,
+              nom: true,
+              coefficient: true,
+              niveau: {
+                select: {
+                  id: true,
+                  libelle: true,
+                }
+              }
+            }
+          }
+        }
+      } : false,
+    },
+    orderBy: {
+      user: {
+        nom: "asc",
+      },
+    },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+}
 
   async countTeachers(includeInactive = false) {
     return prisma.teacher.count({

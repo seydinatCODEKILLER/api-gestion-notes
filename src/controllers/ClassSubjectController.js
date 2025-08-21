@@ -45,6 +45,16 @@ export default class ClassSubjectController {
     }
   }
 
+  async getAllClassSubjects(ctx) {
+    try {
+      const anneeScolaireId = parseInt(ctx.req.param("anneeScolaireId"));
+      const result = await this.service.getClassSubjects(anneeScolaireId);
+      return ctx.json({ success: true, data: result });
+    } catch (error) {
+      throw new HTTPException(400, { message: error.message });
+    }
+  }
+
   async removeAssignment(ctx) {
     try {
       const id = parseInt(ctx.req.param("id"));

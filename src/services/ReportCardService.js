@@ -260,7 +260,7 @@ export default class ReportCardService {
     });
   }
 
-  async getReportCardForDownload(id, user) {
+  async getReportCardForDownload(id) {
     const reportCard = await prisma.reportCard.findUnique({
       where: { id },
       include: {
@@ -278,7 +278,7 @@ export default class ReportCardService {
       throw new Error("Bulletin introuvable");
     }
 
-    await this.verifyReportCardAccess(user, reportCard);
+    // await this.verifyReportCardAccess(user, reportCard);
 
     return {
       filePath: reportCard.file_path,
@@ -322,6 +322,45 @@ export default class ReportCardService {
       },
       orderBy: { trimestre: { libelle: "asc" } },
     });
+    const reportCardsWithAverages = await Promise.all(
+      reportCards.map(async (rc) => {
+        const averages = await prisma.average.findMany({
+          where: {
+            studentId: rc.studentId,
+            trimestreId: rc.trimestreId,
+          },
+          include: { subject: true },
+        });
+        return {
+          ...rc,
+          averages,
+        };
+      })
+    );
+
+    return reportCardsWithAverages;
+  }
+
+  async getAllReportCards() {
+    const reportCards = await prisma.reportCard.findMany({
+      include: {
+        student: {
+          include: {
+            user: true,
+            class: true,
+          },
+        },
+        trimestre: {
+          include: { annee_scolaire: true },
+        },
+      },
+      orderBy: [
+        { trimestre: { libelle: "asc" } },
+        { student: { user: { nom: "asc" } } },
+      ],
+    });
+
+    // Ajouter aussi les moyennes de chaque élève
     const reportCardsWithAverages = await Promise.all(
       reportCards.map(async (rc) => {
         const averages = await prisma.average.findMany({
@@ -467,6 +506,38 @@ export default class ReportCardService {
     });
 
     return rankMap[studentId] || null;
+  }
+
+  async deleteReportCard(id) {
+    return prisma.$transaction(async (tx) => {
+      // Récupérer le bulletin pour avoir le chemin du fichier
+      const reportCard = await tx.reportCard.findUnique({
+        where: { id },
+        select: { file_path: true },
+      });
+
+      if (!reportCard) {
+        throw new Error("Bulletin introuvable");
+      }
+
+      // Supprimer le fichier PDF physique
+      if (reportCard.file_path) {
+        try {
+          await fs.unlink(reportCard.file_path);
+          console.log(`Fichier supprimé: ${reportCard.file_path}`);
+        } catch (error) {
+          console.error("Erreur lors de la suppression du fichier:", error);
+          // On continue quand même la suppression en base de données
+        }
+      }
+
+      // Supprimer le bulletin de la base de données
+      await tx.reportCard.delete({
+        where: { id },
+      });
+
+      return { message: "Bulletin et fichier supprimés avec succès" };
+    });
   }
 
   async _verifyRelations(prismaClient, data) {

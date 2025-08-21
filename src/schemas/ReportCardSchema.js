@@ -18,6 +18,19 @@ export default class ReportCardSchema {
     return result.data;
   }
 
+    validateDelete(data) {
+    // Validation simple pour la suppression
+    const schema = z.object({
+      id: z.number().int().positive()
+    });
+
+    const result = schema.safeParse(data);
+    if (!result.success) {
+      throw new Error(JSON.stringify(result.error.flatten().fieldErrors));
+    }
+    return result.data;
+  }
+
   validateUpdate(data) {
     const schema = z.object({
       rang_classe: z.number().int().min(1).optional(),

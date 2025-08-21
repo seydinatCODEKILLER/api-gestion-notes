@@ -101,6 +101,20 @@ export default class ClassSubjectService {
     });
   }
 
+  async getAllClassSubjects(anneeScolaireId) {
+    const annee = await prisma.anneeScolaire.findUnique({
+      where: { id: anneeScolaireId },
+    });
+    if (!annee) throw new Error("Année scolaire introuvable");
+    return prisma.classSubject.findMany({
+      where: { anneeScolaireId },
+      include: {
+        subject: true,
+        teacher: { include: { user: { select: { nom: true, prenom: true } } } },
+      },
+    });
+  }
+
   async removeAssignment(id) {
     const assignment = await prisma.classSubject.findUnique({ where: { id } });
     if (!assignment) throw new Error("Assignation introuvable");

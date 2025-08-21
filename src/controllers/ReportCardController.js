@@ -88,10 +88,10 @@ export default class ReportCardController {
   async downloadReportCard(ctx) {
     try {
       const id = Number(ctx.req.param("id"));
-      const user = ctx.get("user");
+      // const user = ctx.get("user");
 
       const { filePath, filename } =
-        await this.service.getReportCardForDownload(id, user);
+        await this.service.getReportCardForDownload(id);
 
       // Lire le fichier en Buffer
       const fileBuffer = await fs.readFile(filePath);
@@ -108,4 +108,32 @@ export default class ReportCardController {
       throw new HTTPException(500, { message: error.message });
     }
   }
+
+  async getAllReportCards(ctx) {
+  try {
+    const result = await this.service.getAllReportCards();
+    return ctx.json({ success: true, data: result });
+  } catch (error) {
+    const status = this._getErrorStatus(error);
+    throw new HTTPException(status, { message: error.message });
+  }
+}
+
+  async deleteReportCard(ctx) {
+    try {
+      const id = parseInt(ctx.req.param("id"));
+      if (isNaN(id)) throw new Error("L'ID du bulletin doit être un nombre valide");
+
+      await this.service.deleteReportCard(id);
+      
+      return ctx.json({ 
+        success: true, 
+        message: "Bulletin supprimé avec succès" 
+      });
+    } catch (error) {
+      const status = this._getErrorStatus(error);
+      throw new HTTPException(status, { message: error.message });
+    }
+  }
+
 }

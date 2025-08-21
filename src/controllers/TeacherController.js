@@ -10,13 +10,14 @@ export default class TeacherController {
 
   async getAllTeachers(ctx) {
     try {
-      const { includeInactive, search, page, pageSize } = ctx.req.query();
+      const { includeInactive, search, page, pageSize,includeSubjects} = ctx.req.query();
 
       const teachers = await this.service.getAllTeachers({
         includeInactive: includeInactive === "true",
         search,
         page: parseInt(page) || 1,
         pageSize: parseInt(pageSize) || 10,
+        includeSubjects: includeSubjects === "true",
       });
 
       const total = await this.service.countTeachers(

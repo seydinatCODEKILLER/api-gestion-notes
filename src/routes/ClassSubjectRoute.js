@@ -13,6 +13,9 @@ export default class ClassSubjectRoute {
   setupRoutes() {
     this.router.use("*", this.authMiddleware.protect(["admin"]));
     this.router.post("/", (ctx) => this.controller.assignSubject(ctx));
+    this.router.get("/:anneeScolaireId", (ctx) =>
+      this.controller.getAllClassSubjects(ctx)
+    );
     this.router.put("/:id", (ctx) => this.controller.updateAssignment(ctx));
     this.router.get("/class/:classId/:anneeScolaireId", (ctx) =>
       this.controller.getClassSubjects(ctx)
