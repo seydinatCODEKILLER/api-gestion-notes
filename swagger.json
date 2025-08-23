@@ -11,7 +11,7 @@
       "description": "Dev local"
     },
     {
-      "url": "https://api.gestion-notes.com/api",
+      "url": "https://api-gestion-notes-enah.onrender.com/",
       "description": "Production"
     }
   ],
