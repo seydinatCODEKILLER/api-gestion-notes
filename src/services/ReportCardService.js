@@ -402,4 +402,75 @@ export default class ReportCardService {
       trimestre: { include: { annee_scolaire: true } },
     };
   }
+
+  // Récupère tous les bulletins avec les détails de l'élève, du trimestre et les moyennes par matière
+  async getAllReportCards() {
+    const reportCards = await prisma.reportCard.findMany({
+      include: {
+        student: {
+          include: { user: true, class: true },
+        },
+        trimestre: {
+          include: { annee_scolaire: true },
+        },
+      },
+      orderBy: { id: "desc" }, // ou selon le critère que tu veux
+    });
+
+    // Récupérer les moyennes et notes pour chaque bulletin
+    const reportCardsWithAverages = await Promise.all(
+      reportCards.map(async (rc) => {
+        const averages = await prisma.average.findMany({
+          where: { studentId: rc.studentId, trimestreId: rc.trimestreId },
+          include: { subject: true },
+        });
+
+        // Récupérer les notes par matière pour chaque bulletin
+        const grades = await prisma.grade.findMany({
+          where: {
+            studentId: rc.studentId,
+            evaluation: { trimestreId: rc.trimestreId },
+          },
+          select: {
+            subjectId: true,
+            note: true,
+            evaluation: {
+              select: { titre: true, type: true, date_evaluation: true },
+            },
+            subject: { select: { coefficient: true } },
+          },
+        });
+
+        // Organiser les notes par matière
+        const gradesBySubject = grades.reduce((acc, grade) => {
+          if (!acc[grade.subjectId]) acc[grade.subjectId] = [];
+          acc[grade.subjectId].push(grade);
+          return acc;
+        }, {});
+
+        // Fusionner moyennes et notes pour le PDF ou l'affichage
+        const averagesWithDetails = averages.map((avg) => {
+          const subjectGrades = gradesBySubject[avg.subjectId] || [];
+          const devoirs = subjectGrades
+            .filter((g) => g.evaluation.type === "devoir")
+            .map((g) => g.note);
+          const composition =
+            subjectGrades.find((g) => g.evaluation.type === "composition")
+              ?.note || null;
+
+          return {
+            ...avg,
+            devoir1: devoirs[0] || null,
+            devoir2: devoirs[1] || null,
+            composition,
+            coefficient: avg.subject.coefficient,
+          };
+        });
+
+        return { ...rc, averages: averagesWithDetails };
+      })
+    );
+
+    return reportCardsWithAverages;
+  }
 }
