@@ -11,14 +11,13 @@ export default class AnneeScolaireRoute {
   }
 
   setupRoutes() {
-    this.router.use("*", this.authMiddleware.protect(["admin"]));
-    this.router.get("/", (ctx) => this.controller.getAllAnnees(ctx));
-    this.router.get("/active", (ctx) => this.controller.getActiveAnnee(ctx));
-    this.router.get("/:id", (ctx) => this.controller.getAnnee(ctx));
-    this.router.post("/", (ctx) => this.controller.createAnnee(ctx));
-    this.router.put("/:id", (ctx) => this.controller.updateAnnee(ctx));
-    this.router.patch("/:id/delete", (ctx) => this.controller.deleteAnnee(ctx));
-    this.router.patch("/:id/restore", (ctx) =>this.controller.restoreAnnee(ctx));
+    this.router.get("/",this.authMiddleware.protect(["admin","professeur"]), (ctx) => this.controller.getAllAnnees(ctx));
+    this.router.get("/active",this.authMiddleware.protect(["admin","professeur"]), (ctx) => this.controller.getActiveAnnee(ctx));
+    this.router.get("/:id",this.authMiddleware.protect(["admin"]), (ctx) => this.controller.getAnnee(ctx));
+    this.router.post("/",this.authMiddleware.protect(["admin"]), (ctx) => this.controller.createAnnee(ctx));
+    this.router.put("/:id",this.authMiddleware.protect(["admin"]), (ctx) => this.controller.updateAnnee(ctx));
+    this.router.patch("/:id/delete",this.authMiddleware.protect(["admin"]), (ctx) => this.controller.deleteAnnee(ctx));
+    this.router.patch("/:id/restore",this.authMiddleware.protect(["admin"]), (ctx) =>this.controller.restoreAnnee(ctx));
   }
 
   get routes() {

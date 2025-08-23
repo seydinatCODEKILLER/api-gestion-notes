@@ -29,11 +29,11 @@ export default class GradeService {
     );
   }
   async updateGrade(id, updateData, currentTeacherId) {
-    const teacher = await this.getCurrentTeacher(currentTeacherId);
+    const teacher = await this.getCurrentTeacherId(currentTeacherId);
     return prisma.$transaction(async (tx) => {
       const grade = await tx.grade.findUnique({ where: { id } });
       if (!grade) throw new Error("Note introuvable");
-      if (grade.teacherId !== teacher.id) {
+      if (grade.teacherId !== teacher) {
         throw new Error("Vous n'êtes pas l'auteur de cette note");
       }
 
@@ -77,12 +77,13 @@ export default class GradeService {
   }
 
   async getGradesByClass(classId, filters = {}, currentTeacherId = null) {
+    const idTeacher = await this.getCurrentTeacherId(currentTeacherId);
     const where = {
       student: {
         classId: classId,
       },
       ...this._buildFilters(filters),
-      ...(currentTeacherId && { teacherId: currentTeacherId }), // Filtre par prof si fourni
+      ...(currentTeacherId && { teacherId: idTeacher }), // Filtre par prof si fourni
     };
 
     return prisma.grade.findMany({
@@ -106,6 +107,14 @@ export default class GradeService {
       return tx.grade.delete({ where: { id } });
     });
   }
+
+    async getCurrentTeacherId(userId){
+      const teacher = await prisma.teacher.findUnique({
+        where: {userId: userId}
+      });
+      if(!teacher) throw new Error("professeur introuvable");
+      return teacher.id;
+    }
 
   async _markGradeUpdated(tx, grade) {
     // Vérifie si une entrée existe déjà

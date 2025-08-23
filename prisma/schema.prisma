@@ -97,6 +97,7 @@ model Class {
   classSubjects  ClassSubject[]
 
   @@map("classes")
+  Evaluation Evaluation[]
 }
 
 model Student {
@@ -132,6 +133,7 @@ model Subject {
   alerts        Alert[]       
 
   @@map("subjects")
+  Evaluation Evaluation[]
 }
 
 model Teacher {
@@ -145,6 +147,7 @@ model Teacher {
   teacherSubjects TeacherSubject[]
 
   @@map("teachers")
+  Evaluation Evaluation[]
 }
 
 model Grade {
@@ -155,17 +158,19 @@ model Grade {
   subjectId       Int
   teacher         Teacher        @relation(fields: [teacherId], references: [id])
   teacherId       Int
+  evaluation      Evaluation     @relation(fields: [evaluationId], references: [id])
+  evaluationId    Int
   note            Decimal?       @db.Decimal(4, 2)
   type_note       NoteType
   trimestre       Trimestre      @relation(fields: [trimestreId], references: [id])
   trimestreId     Int
   date            DateTime       @default(now()) @db.Timestamp(6)
-  commentaire     String?        @db.Text
   annee_scolaire  AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
   anneeScolaireId Int
 
   @@map("grades")
 }
+
 
 model Average {
   id              Int            @id @default(autoincrement())
@@ -181,6 +186,7 @@ model Average {
   annee_scolaire  AnneeScolaire  @relation(fields: [anneeScolaireId], references: [id])
   anneeScolaireId Int
 
+  @@unique([studentId, subjectId, trimestreId])
   @@map("averages")
 }
 
@@ -202,6 +208,27 @@ model ReportCard {
 
   @@unique([studentId, trimestreId])
   @@map("report_cards")
+}
+
+model Evaluation {
+  id              Int        @id @default(autoincrement())
+  classId         Int
+  subjectId       Int
+  teacherId       Int
+  type            NoteType
+  titre           String
+  date_evaluation DateTime
+  anneeScolaireId Int
+  trimestreId     Int
+
+  class          Class        @relation(fields: [classId], references: [id])
+  subject        Subject      @relation(fields: [subjectId], references: [id])
+  teacher        Teacher      @relation(fields: [teacherId], references: [id])
+  annee_scolaire AnneeScolaire @relation(fields: [anneeScolaireId], references: [id])
+  trimestre      Trimestre    @relation(fields: [trimestreId], references: [id])
+  notes          Grade[]
+
+  @@map("evaluations")
 }
 
 
@@ -259,6 +286,7 @@ model AnneeScolaire {
   Class          Class[]
 
   @@map("annee_scolaire")
+  Evaluation Evaluation[]
 }
 
 model Trimestre {
@@ -273,6 +301,7 @@ model Trimestre {
   alerts          Alert[]
 
   @@map("trimestres")
+  Evaluation Evaluation[]
 }
 
 model GradeUpdateTrack {

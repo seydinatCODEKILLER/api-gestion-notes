@@ -120,4 +120,38 @@ export default class ClassController {
       throw new HTTPException(400, { message: error.message });
     }
   }
+  
+  async getClassWithStudents(ctx) {
+    try {
+      const classId = parseInt(ctx.req.param("id"));
+      if (isNaN(classId)) throw new Error("ID de classe invalide");
+
+      const classe = await this.service.getClassWithStudents(classId);
+      if (!classe) throw new Error("Classe introuvable");
+
+      return ctx.json({
+        success: true,
+        data: {
+          ...classe,
+          effectif: classe.students.length,
+        },
+      });
+    } catch (error) {
+      const status = error.message.includes("introuvable") ? 404 : 400;
+      throw new HTTPException(status, { message: error.message });
+    }
+  }
+
+  async getStudentsByClass(ctx) {
+    try {
+      const classId = parseInt(ctx.req.param("id"));
+      if (isNaN(classId)) throw new Error("ID de classe invalide");
+  
+      const students = await this.service.getStudentsByClass(classId)
+  
+      return ctx.json({ success: true, data: students });
+    } catch (error) {
+      throw new HTTPException(400, { message: error.message });
+    }
+  }
 }

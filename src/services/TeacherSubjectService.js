@@ -74,11 +74,12 @@ export default class TeacherSubjectService {
 
   async getTeacherSubjects(teacherId) {
     const teacher = await prisma.teacher.findUnique({
-      where: { id: teacherId },
+      where: { userId: teacherId },
     });
     if (!teacher) throw new Error("Professeur introuvable");
+    const id = teacher.id
     return prisma.teacherSubject.findMany({
-      where: { teacherId },
+      where: { id },
       include: { subject: true },
     });
   }

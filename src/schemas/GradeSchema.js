@@ -9,7 +9,6 @@ export default class GradeSchema {
       anneeScolaireId: z.number().int().positive(),
       note: z.number().min(0).max(20),
       type_note: z.enum(['devoir', 'composition', 'oral', 'projet']),
-      commentaire: z.string().max(500).optional()
     }).refine(data => data.note <= 20, {
       message: "La note ne peut pas dépasser 20",
       path: ["note"]
@@ -24,9 +23,7 @@ export default class GradeSchema {
   validateUpdate(data) {
     const schema = z.object({
       note: z.number().min(0).max(20).optional(),
-      coefficient: z.number().min(0.1).max(10).optional(),
       type_note: z.enum(['devoir', 'composition', 'oral', 'projet']).optional(),
-      commentaire: z.string().max(500).optional()
     }).refine(data => Object.keys(data).length > 0, {
       message: "Au moins un champ doit être fourni pour la mise à jour"
     });

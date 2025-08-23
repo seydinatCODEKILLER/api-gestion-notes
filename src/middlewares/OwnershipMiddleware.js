@@ -16,8 +16,9 @@ export default class OwnershipMiddleware {
     // Pour POST /averages (création manuelle)
     if (ctx.req.method === "POST") {
       const body = await ctx.req.json();
+      console.log(body)
       const hasAccess = teacher.teacherSubjects.some(
-        (ts) => ts.subjectId === body.subjectId
+        (ts) => ts.subjectId == body.subjectId
       );
 
       if (!hasAccess) {

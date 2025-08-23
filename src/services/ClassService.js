@@ -144,16 +144,15 @@ export default class ClassService {
   async getClassesByTeacher(teacherId) {
     if (!teacherId) throw new Error("ID du professeur requis");
     const teacher = await prisma.teacher.findUnique({
-      where: { id: teacherId },
+      where: { userId: teacherId }, // ici on cherche par userId
     });
-
     if (!teacher) throw new Error("cette professeur est introuvable");
 
     const classes = await prisma.class.findMany({
       where: {
         classSubjects: {
           some: {
-            teacherId: teacherId,
+            teacherId: teacher.id,
           },
         },
         statut: "actif",
@@ -178,5 +177,69 @@ export default class ClassService {
     ]);
 
     return { total, active, inactive };
+  }
+
+  async getClassWithStudents(classId) {
+    const classe = await prisma.class.findUnique({
+      where: { id: classId },
+      include: {
+        niveau: true,
+        anneeScolaire: true,
+        students: {
+          where: {
+            user: {
+              statut: "actif",
+            },
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                nom: true,
+                prenom: true,
+                email: true,
+                telephone: true,
+                statut: true,
+              },
+            },
+          },
+          orderBy: {
+            user: {
+              nom: "asc",
+            },
+          },
+        },
+      },
+    });
+    return classe;
+  }
+
+  async getStudentsByClass(classId) {
+      const students = await prisma.student.findMany({
+        where: {
+          classId: classId,
+          user: {
+            statut: "actif",
+          },
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              nom: true,
+              prenom: true,
+              email: true,
+              telephone: true,
+            },
+          },
+        },
+        orderBy: {
+          user: {
+            nom: "asc",
+            prenom: "asc",
+          },
+        },
+      });
+      return students
   }
 }

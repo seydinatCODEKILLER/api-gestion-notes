@@ -12,7 +12,13 @@ export default class AverageController {
   async createOrUpdateAverage(ctx) {
     try {
       const data = await ctx.req.json();
-      const validatedData = this.validator.validateCreate(data);
+      console.log(data)
+      const dt = {
+        studentId: parseInt(data.studentId),
+        subjectId: parseInt(data.subjectId),
+        trimestreId: parseInt(data.trimestreId)
+      }
+      const validatedData = this.validator.validateCreate(dt);
       
       const result = await this.service.createOrUpdateAverage(validatedData);
       return ctx.json({ success: true, data: result });

@@ -13,7 +13,7 @@ export default class GradeRoute {
   setupRoutes() {
     this.router.post("/", this.authMiddleware.protect(["professeur"]), (ctx) => this.controller.createGrade(ctx));
     this.router.put("/:id", this.authMiddleware.protect(["professeur"]),(ctx) => this.controller.updateGrade(ctx));
-    this.router.delete("/:id", this.authMiddleware.protect(["professeur"]),(ctx) => this.controller.deleteGrade(ctx));
+    this.router.delete("/:id", this.authMiddleware.protect(["professeur","admin"]),(ctx) => this.controller.deleteGrade(ctx));
     this.router.get("/student/:studentId", this.authMiddleware.protect(["professeur", "admin", "eleve"]),(ctx) => this.controller.getStudentGrades(ctx));
     this.router.get("/class/:classId", this.authMiddleware.protect(["professeur", "admin"]),(ctx) => this.controller.getClassGrades(ctx));
   }

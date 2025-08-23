@@ -25,6 +25,12 @@ export default class ClassRoute {
     this.router.get("/:id", this.authMiddleware.protect(["admin"]), (ctx) =>
       this.controller.getClass(ctx)
     );
+    this.router.get("/:id/student", this.authMiddleware.protect(["admin","professeur"]), (ctx) =>
+      this.controller.getClassWithStudents(ctx)
+    );
+    this.router.get("/:id/students", this.authMiddleware.protect(["admin","professeur"]), (ctx) =>
+      this.controller.getStudentsByClass(ctx)
+    );
     this.router.post("/", this.authMiddleware.protect(["admin"]), (ctx) =>
       this.controller.createClass(ctx)
     );

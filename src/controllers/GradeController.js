@@ -44,8 +44,7 @@ export default class GradeController {
       const studentId = parseInt(ctx.req.param("studentId"));
       const currentTeacherId =
         ctx.get("user").role === "professeur" ? ctx.get("user").id : null;
-        console.log(`Current Teacher ID: ${currentTeacherId}`);
-        
+      console.log(`Current Teacher ID: ${currentTeacherId}`);
 
       const filters = {
         subjectId: ctx.req.query("subjectId")
