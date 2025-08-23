@@ -12,7 +12,7 @@
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "build-docs": "npx swagger-cli bundle src/docs/openapi.yaml -o src/docs/openapi.json --type json",
-    "build": "echo 'Pas de build pour le backend JS classique 😉'"
+    "build": "npx prisma generate"
   },
   "dependencies": {
     "@hono/node-server": "^1.18.1",
