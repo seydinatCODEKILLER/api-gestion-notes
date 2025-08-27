@@ -13,6 +13,11 @@ export default class TeacherSubjectRoute {
   setupRoutes() {
     this.router.post("/", (ctx) => this.controller.assignSubject(ctx));
     this.router.get("/teacher/:teacherId",this.authMiddleware.protect(["admin","professeur"]), (ctx) =>this.controller.getTeacherSubjects(ctx));
+    this.router.get(
+      "/teacherClass/:teacherId",
+      this.authMiddleware.protect(["admin", "professeur"]),
+      (ctx) => this.controller.getTeacherSubjectsForTeacher(ctx)
+    );
     this.router.delete("/:id",this.authMiddleware.protect(["admin"]), (ctx) =>this.controller.removeAssignment(ctx));
     this.router.get("/",this.authMiddleware.protect(["admin"]), (ctx) => this.controller.getAllAssociations(ctx));
     this.router.get("/:id", this.authMiddleware.protect(["admin"]),(ctx) => this.controller.getAssociation(ctx));

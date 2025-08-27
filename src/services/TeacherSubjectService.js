@@ -46,6 +46,14 @@ export default class TeacherSubjectService {
     });
   }
 
+  async getCurrentTeacher(currentUserId) {
+    const teacher = await prisma.teacher.findUnique({
+      where: { userId: currentUserId },
+    });
+    if (!teacher) throw new Error("Professeur introuvable");
+    return teacher.id;
+  }
+
   async getAssociation(id) {
     const association = await prisma.teacherSubject.findUnique({
       where: { id },
@@ -73,13 +81,19 @@ export default class TeacherSubjectService {
   }
 
   async getTeacherSubjects(teacherId) {
-    const teacher = await prisma.teacher.findUnique({
-      where: { userId: teacherId },
-    });
-    if (!teacher) throw new Error("Professeur introuvable");
-    const id = teacher.id
+    const idTeacher = await this.getCurrentTeacher(teacherId);
+    console.log(idTeacher);
     return prisma.teacherSubject.findMany({
-      where: { id },
+      where: { teacherId: teacherId },
+      include: { subject: true },
+    });
+  }
+
+  async getTeacherSubjectsForTeacher(teacherId) {
+    const idTeacher = await this.getCurrentTeacher(teacherId);
+    console.log(idTeacher);
+    return prisma.teacherSubject.findMany({
+      where: { teacherId: idTeacher },
       include: { subject: true },
     });
   }

@@ -33,7 +33,7 @@ export default class GradeService {
     return prisma.$transaction(async (tx) => {
       const grade = await tx.grade.findUnique({ where: { id } });
       if (!grade) throw new Error("Note introuvable");
-      if (grade.teacherId !== teacher) {
+      if (grade.teacherId !== currentTeacherId) {
         throw new Error("Vous n'êtes pas l'auteur de cette note");
       }
 
@@ -83,7 +83,7 @@ export default class GradeService {
         classId: classId,
       },
       ...this._buildFilters(filters),
-      ...(currentTeacherId && { teacherId: idTeacher }), // Filtre par prof si fourni
+      ...(currentTeacherId && { teacherId: currentTeacherId }), // Filtre par prof si fourni
     };
 
     return prisma.grade.findMany({

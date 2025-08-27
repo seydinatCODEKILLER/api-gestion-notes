@@ -8,5 +8,6 @@ export const env = {
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
   JWT_SECRET: process.env.JWT_SECRET,
-  JWT_DURATION: process.env.JWT_DURATION
+  JWT_DURATION: process.env.JWT_DURATION,
+  HOST: process.env.HOST || 'localhost'
 }
