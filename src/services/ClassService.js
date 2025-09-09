@@ -1,6 +1,7 @@
 import { prisma } from "../config/database.js";
 
 export default class ClassService {
+  
   async getAllClasses(options = {}) {
     const {
       includeInactive = false,

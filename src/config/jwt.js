@@ -11,4 +11,10 @@ export default class TokenGenerator {
   verify(token) {
     return jwt.verify(token, env.JWT_SECRET);
   }
+
+  signRefresh(payload) {
+    return jwt.sign(payload, env.JWT_SECRET, {
+      expiresIn: env.JWT_REFRESH_DURATION,
+    })
+  }
 }

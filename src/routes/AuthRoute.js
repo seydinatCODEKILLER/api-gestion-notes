@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import AuthController from "../controllers/AuthController.js";
+import responseHandler from "../middlewares/responseMiddleware.js";
 
 export default class AuthRoute {
   constructor() {
@@ -9,7 +10,10 @@ export default class AuthRoute {
   }
 
   setupRoutes() {
+    this.router.use('*', responseHandler);
     this.router.post("/login", (ctx) => this.controller.login(ctx));
+    this.router.post("/refreshToken", (ctx) => this.controller.refreshToken(ctx));
+    this.router.get("/me", (ctx) => this.controller.getCurrentUser(ctx));
   }
 
   get routes() {
